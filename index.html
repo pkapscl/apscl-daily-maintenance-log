@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Maintenance Log – APSCL North Zone-B</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231f5fbf'><path d='M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6-9.6 9.6a1 1 0 0 0-.3.7V21h1.4a1 1 0 0 0 .7-.3l9.6-9.6 1.6 1.6a1 1 0 0 0 1.4-1.4l-3-3a1 1 0 0 0-1.4 0z'/></svg>">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/app.css">
+  
+  <!-- Supabase JS Client via Official CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <div class="brand-icon">⚙️</div>
+      <strong class="brand-title">Maintenance Log</strong>
+    </div>
+
+    <nav class="nav-links">
+      <a class="nav-item active" data-view="daily-log">Daily log</a>
+      <a class="nav-item" data-view="pending-works">
+        Pending works <span id="pending-count-badge" style="background: rgba(255,255,255,0.18); font-size: 11px; padding: 1px 6px; border-radius: 10px; margin-left: 4px;">4</span>
+      </a>
+      <a class="nav-item" data-view="weekly-report">Weekly report</a>
+      <a class="nav-item" data-view="document-center">Document center</a>
+    </nav>
+
+    <div class="header-meta">
+      <span class="division-tag">DMW (GT, HRSG &amp; AUX) · North · Zone-B</span>
+      <button id="db-settings-btn" class="db-status-btn" title="Configure Supabase Connection">
+        <span id="db-status-dot" class="status-dot"></span>
+        <span id="db-status-text">Supabase</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Workspace Content -->
+  <main class="main-content">
+
+    <!-- ================================================================= -->
+    <!-- VIEW 1: DAILY LOG ENTRY & PREVIOUS RECORDS                        -->
+    <!-- ================================================================= -->
+    <section id="view-daily-log" class="view-section active">
+      <div class="main-log-grid" style="display: grid; grid-template-columns: 1fr 380px; gap: 24px; margin-bottom: 24px;">
+        
+        <!-- Left: Work Entry Form Card -->
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+            <h1 id="form-card-title" style="margin: 0; font-size: 20px; font-weight: 700;">New work entry</h1>
+            <span style="font-size: 12.5px; color: var(--text-muted);">APSCL Power Plant Operations</span>
+          </div>
+
+          <form id="work-entry-form" onsubmit="return false;">
+            <div class="grid-form">
+              <!-- Date -->
+              <div class="span-1">
+                <label class="form-label" for="log-date">Date</label>
+                <input type="date" id="log-date" class="input-field" required>
+              </div>
+
+              <!-- Plant / Area -->
+              <div class="span-1">
+                <label class="form-label" for="log-area">Plant / Area</label>
+                <select id="log-area" class="input-field"></select>
+              </div>
+
+              <!-- Schedule / TR No. -->
+              <div class="span-1">
+                <label class="form-label" for="log-tr">Schedule / TR No.</label>
+                <input type="text" id="log-tr" class="input-field" placeholder="e.g. TSFTN-1212 or Schedule">
+              </div>
+
+              <!-- Equipment Name with Autocomplete -->
+              <div class="span-2 autocomplete-container">
+                <label class="form-label" for="log-equipment">Equipment name</label>
+                <input type="text" id="log-equipment" class="input-field" placeholder="Start typing (e.g. Coalescer, Filter, Valve, Pump)..." autocomplete="off" required>
+                <div id="equipment-autocomplete" class="autocomplete-dropdown"></div>
+              </div>
+
+              <!-- KKS Code (Auto-filled) -->
+              <div class="span-1">
+                <label class="form-label" for="log-kks">KKS (auto-filled)</label>
+                <input type="text" id="log-kks" class="input-field kks-display" placeholder="Auto-fills from equipment">
+              </div>
+
+              <!-- Work Time (Optional) -->
+              <div class="span-1">
+                <label class="form-label" for="log-time-from">Work Time From</label>
+                <input type="time" id="log-time-from" class="input-field">
+              </div>
+
+              <div class="span-1">
+                <label class="form-label" for="log-time-to">Work Time To</label>
+                <input type="time" id="log-time-to" class="input-field">
+              </div>
+
+              <!-- Remarks -->
+              <div class="span-1">
+                <label class="form-label" for="log-remarks">Remarks</label>
+                <input type="text" id="log-remarks" class="input-field" placeholder="Routine, Trouble, Part replaced...">
+              </div>
+
+              <!-- Description of maintenance work -->
+              <div class="span-3">
+                <label class="form-label" for="log-work">Description of maintenance work</label>
+                <textarea id="log-work" class="input-field" placeholder="Describe the maintenance, disassembly, cleaning, replacement, or testing carried out..." required></textarea>
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
+              <button type="button" id="reset-form-btn" class="btn btn-secondary">Clear</button>
+              <button type="button" id="save-draft-btn" class="btn btn-secondary">Save draft</button>
+              <button type="button" id="save-entry-btn" class="btn btn-primary">Save entry</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right: Suggestions while you type Panel -->
+        <div class="suggestions-card">
+          <div class="suggestions-header">
+            <span>💡</span>
+            <h2>Suggestions while you type</h2>
+          </div>
+          <div id="suggestions-container">
+            <div style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 24px 0;">
+              Start typing equipment name or work description to see matching records and suggestions.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom: All Previous Records Table -->
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <div style="padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-card);">
+          <strong style="font-size: 16px;">All previous records (newest first)</strong>
+          <span style="font-size: 12.5px; color: var(--text-muted);">Real-time historical archive</span>
+        </div>
+
+        <div style="padding: 16px 24px 8px;">
+          <div class="filter-bar">
+            <input type="text" id="records-search" class="input-field filter-search" placeholder="Search across equipment, KKS, work description, TR No...">
+            <select id="records-area-filter" class="filter-select"></select>
+            <input type="date" id="records-date-filter" class="filter-select" title="Filter by date">
+          </div>
+        </div>
+
+        <div class="table-wrapper" style="border: none; border-radius: 0;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 110px;">Date</th>
+                <th style="width: 140px;">Area</th>
+                <th style="width: 120px;">TR No.</th>
+                <th style="width: 180px;">Equipment</th>
+                <th style="width: 130px;">KKS</th>
+                <th>Work done</th>
+                <th style="width: 90px; text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="records-table-body">
+              <tr>
+                <td colspan="7" style="text-align: center; padding: 32px; color: var(--text-muted);">Loading maintenance records...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 2: PENDING WORKS TRACKER                                     -->
+    <!-- ================================================================= -->
+    <section id="view-pending-works" class="view-section">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div>
+          <h1 style="font-size: 20px; font-weight: 700; margin-bottom: 4px;">Pending Works &amp; Active Inspections</h1>
+          <p style="font-size: 13.5px; color: var(--text-muted);">Track ongoing repairs, leak investigations, and jobs awaiting parts in North Zone-B.</p>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <select id="pending-status-filter" class="filter-select">
+            <option value="active">All Active (In Progress &amp; Draft)</option>
+            <option value="in_progress">In Progress Only</option>
+            <option value="draft">Drafts Only</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="pending-works-list">
+        <!-- Rendered dynamically by pending.js -->
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 3: OFFICIAL WEEKLY REPORT                                    -->
+    <!-- ================================================================= -->
+    <section id="view-weekly-report" class="view-section">
+      <!-- Toolbar -->
+      <div class="no-print" style="display: flex; gap: 16px; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <label for="report-week-no" style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Week No</label>
+          <input type="number" id="report-week-no" class="input-field" value="14" min="1" max="53" style="width: 80px;">
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <label for="report-year" style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Year</label>
+          <input type="number" id="report-year" class="input-field" value="2026" min="2020" max="2035" style="width: 90px;">
+        </div>
+
+        <span id="report-date-subtext" style="font-size: 13.5px; color: var(--text-muted);"></span>
+
+        <div style="margin-left: auto; display: flex; gap: 10px;">
+          <button id="export-weekly-csv-btn" class="btn btn-secondary">Export CSV</button>
+          <button id="print-weekly-btn" class="btn btn-primary">Print / Export PDF</button>
+        </div>
+      </div>
+
+      <!-- Printable APSCL Document Card -->
+      <div class="weekly-report-card">
+        <div class="report-header-block">
+          <h2>Weekly Maintenance Record</h2>
+          <div class="org-title">Mechanical (GT, HRSG &amp; Aux.), North, Zone-B</div>
+          <div class="org-subtitle">Ashuganj Power Station Company Limited (APSCL)</div>
+          <div class="org-subtitle">Ashuganj, Brahmanbaria-3402</div>
+        </div>
+
+        <div class="report-meta-grid">
+          <div><strong>Week No:</strong> <span id="meta-week-no">14</span></div>
+          <div><strong>Week Start Date:</strong> <span id="meta-start-date">13-Jun-2026</span></div>
+          <div><strong>Week End Date:</strong> <span id="meta-end-date">18-Jun-2026</span></div>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="weekly-official-table">
+            <thead>
+              <tr>
+                <th rowspan="2" style="width: 100px;">Day / Date</th>
+                <th rowspan="2" style="width: 120px;">Plant Area</th>
+                <th rowspan="2" style="width: 120px;">Schedule Ref. / TR No.</th>
+                <th rowspan="2" style="width: 160px;">Equipment Name</th>
+                <th rowspan="2" style="width: 130px;">KKS</th>
+                <th rowspan="2" style="width: 32%;">Description of Maintenance Work</th>
+                <th colspan="2" style="width: 120px;">Work Time</th>
+                <th rowspan="2" style="width: 120px;">Remarks</th>
+              </tr>
+              <tr>
+                <th style="font-size: 11px;">From</th>
+                <th style="font-size: 11px;">To</th>
+              </tr>
+            </thead>
+            <tbody id="weekly-report-table-body">
+              <!-- Rendered by weekly.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 4: DOCUMENT CENTER                                           -->
+    <!-- ================================================================= -->
+    <section id="view-document-center" class="view-section">
+      <div class="doc-center-grid">
+        
+        <!-- Categories Column -->
+        <div class="card" style="padding: 14px;">
+          <div style="font-size: 11.5px; font-weight: 700; color: var(--text-muted); padding: 6px 12px 10px; letter-spacing: 0.05em;">CATEGORIES</div>
+          <nav id="doc-categories-nav" class="category-nav">
+            <div class="category-item active" data-cat="All documents">All documents</div>
+            <div class="category-item" data-cat="Equipment list">Equipment list</div>
+            <div class="category-item" data-cat="KKS numbers">KKS numbers</div>
+            <div class="category-item" data-cat="Equipment + KKS">Equipment + KKS list</div>
+            <div class="category-item" data-cat="Maintenance general tools">Maintenance general tools</div>
+            <div class="category-item" data-cat="TR register">TR register</div>
+            <div class="category-item" data-cat="Other documents">Other documents</div>
+          </nav>
+        </div>
+
+        <!-- Center: Documents Table -->
+        <div>
+          <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+            <input type="text" id="doc-search-input" class="input-field" placeholder="Search documents, reference lists, and equipment tags...">
+            <button id="upload-doc-btn" class="btn btn-primary" style="white-space: nowrap;">Upload document</button>
+          </div>
+
+          <div class="card" style="padding: 0; overflow: hidden;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Document</th>
+                  <th>Category</th>
+                  <th>Feeds this field</th>
+                  <th>Suggest in log</th>
+                </tr>
+              </thead>
+              <tbody id="documents-table-body">
+                <!-- Populated by documents.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right: Live Preview Panel -->
+        <div class="card doc-center-preview">
+          <h2 style="font-size: 15px; font-weight: 600; margin-bottom: 4px;">Preview</h2>
+          <div id="doc-preview-term" style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">Matches for "Coalescer"</div>
+          <div id="doc-preview-container">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================== Modals ======================== -->
+
+  <!-- Supabase Settings Modal -->
+  <div id="db-settings-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Supabase Database Configuration</h3>
+        <button class="modal-close-btn close-db-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 16px;">
+          Connect your Daily Maintenance Log to your Supabase PostgreSQL cloud database. If unconfigured or offline, the app operates using browser local storage with full seed data.
+        </p>
+
+        <div style="margin-bottom: 16px;">
+          <label class="form-label" for="db-config-url">Supabase Project URL</label>
+          <input type="text" id="db-config-url" class="input-field" placeholder="https://<project-ref>.supabase.co">
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <label class="form-label" for="db-config-key">Supabase Anon Key (Public / Publishable)</label>
+          <input type="password" id="db-config-key" class="input-field" placeholder="eyJhbGciOiJIUzI1NiIsIn...">
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-md); padding: 12px; font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">
+          <strong>SQL Schema:</strong> Complete database tables, triggers, and seed data are located in <code>supabase/schema.sql</code> and <code>supabase/seed.sql</code>.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close-db-modal">Cancel</button>
+        <button type="button" id="save-db-config-btn" class="btn btn-primary">Save &amp; Connect</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload Reference Document Modal -->
+  <div id="upload-doc-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Register Reference Document</h3>
+        <button class="modal-close-btn" onclick="document.getElementById('upload-doc-modal').classList.remove('open')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom: 16px;">
+          <label class="form-label" for="new-doc-title">Document Title</label>
+          <input type="text" id="new-doc-title" class="input-field" placeholder="e.g. Steam Turbine Valve Master Catalog">
+        </div>
+        <div style="margin-bottom: 16px;">
+          <label class="form-label" for="new-doc-category">Category</label>
+          <select id="new-doc-category" class="input-field">
+            <option value="Equipment list">Equipment list</option>
+            <option value="KKS numbers">KKS numbers</option>
+            <option value="Equipment + KKS">Equipment + KKS list</option>
+            <option value="Maintenance general tools">Maintenance general tools</option>
+            <option value="TR register">TR register</option>
+            <option value="Other documents">Other documents</option>
+          </select>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <label class="form-label" for="new-doc-field">Feeds Log Field</label>
+          <input type="text" id="new-doc-field" class="input-field" placeholder="e.g. Equipment name or Description">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('upload-doc-modal').classList.remove('open')">Cancel</button>
+        <button type="button" id="save-new-doc-btn" class="btn btn-primary">Save Document</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- App Entry Script -->
+  <script type="module" src="js/app.js"></script>
+
+</body>
+</html>

@@ -27,13 +27,13 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Install Dependencies
+      - name: Scaffold Android Platform Wrapper
         working-directory: flutter_app
-        run: flutter pub get
+        run: flutter create --org com.apscl --project-name apscl_maintenance_app .
 
       - name: Build Release APK
         working-directory: flutter_app
-        run: flutter build apk --release --split-per-abi=false
+        run: flutter build apk --release
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4

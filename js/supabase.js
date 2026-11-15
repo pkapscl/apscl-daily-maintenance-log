@@ -10,9 +10,9 @@ const STORAGE_KEYS = {
   LOCAL_DOCS: 'apscl_local_documents'
 };
 
-// Default project configuration for APSCL (from workspace environment)
-const DEFAULT_URL = 'https://jiaatesuerjgdnhajswl.supabase.co';
-const DEFAULT_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImppYWF0ZXN1ZXJqZ2RuaGFqc3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQyMTA0MDEsImV4cCI6MjEwOTc4NjQwMX0.ZKqhwyEDlN_6enNnD7QGFJhwJEf49HpucBXX3w_U89o';
+// Default project configuration for APSCL Daily Maintenance Database
+const DEFAULT_URL = 'https://gapaeucltrageydabjuq.supabase.co';
+const DEFAULT_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdhcGFldWNsdHJhZ2V5ZGFianVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ3NjE5ODAsImV4cCI6MjExMDMzNzk4MH0.mLumo6zL6ZuLl0ZwKI8xf-nO9EjK5hc9Stil0K337Eo';
 
 let supabaseClient = null;
 let isConnected = false;

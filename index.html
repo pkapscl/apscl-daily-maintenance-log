@@ -33,7 +33,9 @@
     </nav>
 
     <div class="header-meta">
-      <span class="division-tag">DMW (GT, HRSG &amp; AUX) · North · Zone-B</span>
+      <span class="division-tag">ST &amp; Aux.), North, Zone-B</span>
+      <span id="logged-in-user-tag" style="display: none; background: rgba(31, 95, 191, 0.45); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 500; color: #fff;"></span>
+      <button id="logout-btn" class="btn btn-secondary" style="display: none; padding: 4px 10px; font-size: 12px; height: 28px; background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.25);">Sign Out</button>
       <button id="db-settings-btn" class="db-status-btn" title="Configure Supabase Connection">
         <span id="db-status-dot" class="status-dot"></span>
         <span id="db-status-text">Supabase</span>
@@ -84,25 +86,19 @@
                 <div id="equipment-autocomplete" class="autocomplete-dropdown"></div>
               </div>
 
-              <!-- KKS Code (Auto-filled) -->
+              <!-- KKS Code (Auto-filled) with Toggle -->
               <div class="span-1">
-                <label class="form-label" for="log-kks">KKS (auto-filled)</label>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <label class="form-label" for="log-kks" style="margin: 0;">KKS (auto-filled)</label>
+                  <label style="font-size: 11.5px; color: var(--text-muted); display: inline-flex; align-items: center; gap: 4px; cursor: pointer; user-select: none;">
+                    <input type="checkbox" id="toggle-kks-autofill" checked style="cursor: pointer;"> Auto-fill
+                  </label>
+                </div>
                 <input type="text" id="log-kks" class="input-field kks-display" placeholder="Auto-fills from equipment">
               </div>
 
-              <!-- Work Time (Optional) -->
-              <div class="span-1">
-                <label class="form-label" for="log-time-from">Work Time From</label>
-                <input type="time" id="log-time-from" class="input-field">
-              </div>
-
-              <div class="span-1">
-                <label class="form-label" for="log-time-to">Work Time To</label>
-                <input type="time" id="log-time-to" class="input-field">
-              </div>
-
               <!-- Remarks -->
-              <div class="span-1">
+              <div class="span-3">
                 <label class="form-label" for="log-remarks">Remarks</label>
                 <input type="text" id="log-remarks" class="input-field" placeholder="Routine, Trouble, Part replaced...">
               </div>
@@ -110,7 +106,7 @@
               <!-- Description of maintenance work -->
               <div class="span-3">
                 <label class="form-label" for="log-work">Description of maintenance work</label>
-                <textarea id="log-work" class="input-field" placeholder="Describe the maintenance, disassembly, cleaning, replacement, or testing carried out..." required></textarea>
+                <textarea id="log-work" class="input-field" placeholder="Describe the maintenance, disassembly, cleaning, replacement, or testing carried out... (Press Ctrl+Enter to save immediately)" required></textarea>
               </div>
             </div>
 
@@ -227,7 +223,7 @@
       <div class="weekly-report-card">
         <div class="report-header-block">
           <h2>Weekly Maintenance Record</h2>
-          <div class="org-title">Mechanical (GT, HRSG &amp; Aux.), North, Zone-B</div>
+          <div class="org-title">Mechanical (ST &amp; Aux.), North, Zone-B</div>
           <div class="org-subtitle">Ashuganj Power Station Company Limited (APSCL)</div>
           <div class="org-subtitle">Ashuganj, Brahmanbaria-3402</div>
         </div>
@@ -242,18 +238,13 @@
           <table class="weekly-official-table">
             <thead>
               <tr>
-                <th rowspan="2" style="width: 100px;">Day / Date</th>
-                <th rowspan="2" style="width: 120px;">Plant Area</th>
-                <th rowspan="2" style="width: 120px;">Schedule Ref. / TR No.</th>
-                <th rowspan="2" style="width: 160px;">Equipment Name</th>
-                <th rowspan="2" style="width: 130px;">KKS</th>
-                <th rowspan="2" style="width: 32%;">Description of Maintenance Work</th>
-                <th colspan="2" style="width: 120px;">Work Time</th>
-                <th rowspan="2" style="width: 120px;">Remarks</th>
-              </tr>
-              <tr>
-                <th style="font-size: 11px;">From</th>
-                <th style="font-size: 11px;">To</th>
+                <th style="width: 100px;">Day / Date</th>
+                <th style="width: 120px;">Plant Area</th>
+                <th style="width: 120px;">Schedule Ref. / TR No.</th>
+                <th style="width: 160px;">Equipment Name</th>
+                <th style="width: 130px;">KKS</th>
+                <th>Description of Maintenance Work</th>
+                <th style="width: 130px;">Remarks</th>
               </tr>
             </thead>
             <tbody id="weekly-report-table-body">
@@ -388,6 +379,63 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" onclick="document.getElementById('upload-doc-modal').classList.remove('open')">Cancel</button>
         <button type="button" id="save-new-doc-btn" class="btn btn-primary">Save Document</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Authentication Login Modal Overlay -->
+  <div id="login-modal-overlay" class="auth-overlay">
+    <div class="login-card">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+        <div class="brand-icon" style="width: 38px; height: 38px; font-size: 18px;">⚙️</div>
+        <div>
+          <h2 style="font-size: 18px; font-weight: 700; margin: 0; color: var(--text-main);">APSCL North Zone-B</h2>
+          <p style="font-size: 12.5px; color: var(--text-muted); margin: 0;">ST &amp; Aux. Maintenance Portal Login</p>
+        </div>
+      </div>
+
+      <form id="login-form">
+        <div style="margin-bottom: 16px;">
+          <label class="form-label" for="login-username">User ID</label>
+          <input type="text" id="login-username" class="input-field" placeholder="Enter User ID (e.g. admin)" required autocomplete="username">
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <label class="form-label" for="login-password">Password</label>
+          <input type="password" id="login-password" class="input-field" placeholder="••••••••••••" required autocomplete="current-password">
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px;">
+          <label style="font-size: 13px; color: var(--text-muted); display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none;">
+            <input type="checkbox" id="login-remember" checked style="cursor: pointer;">
+            Keep me logged in
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; height: 44px; font-size: 15px; font-weight: 600;">
+          Log In to Maintenance System
+        </button>
+      </form>
+
+      <!-- Quick demo credentials selector -->
+      <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border-card);">
+        <div style="font-size: 11.5px; font-weight: 600; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em;">
+          Select User Account (Click to auto-fill):
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <button type="button" class="quick-fill-btn" data-u="admin" data-p="apscl@admin123" style="text-align: left; display: flex; justify-content: space-between; align-items: center; padding: 7px 10px;">
+            <span><strong>admin</strong> <span style="color: var(--text-muted); font-size: 11px;">(Executive Engineer / Admin)</span></span>
+            <span style="font-family: monospace; font-size: 11px; color: var(--primary-blue);">apscl@admin123</span>
+          </button>
+          <button type="button" class="quick-fill-btn" data-u="engineer1" data-p="st@zoneB123" style="text-align: left; display: flex; justify-content: space-between; align-items: center; padding: 7px 10px;">
+            <span><strong>engineer1</strong> <span style="color: var(--text-muted); font-size: 11px;">(Shift In-Charge)</span></span>
+            <span style="font-family: monospace; font-size: 11px; color: var(--primary-blue);">st@zoneB123</span>
+          </button>
+          <button type="button" class="quick-fill-btn" data-u="engineer2" data-p="north@apscl2026" style="text-align: left; display: flex; justify-content: space-between; align-items: center; padding: 7px 10px;">
+            <span><strong>engineer2</strong> <span style="color: var(--text-muted); font-size: 11px;">(Site Engineer)</span></span>
+            <span style="font-family: monospace; font-size: 11px; color: var(--primary-blue);">north@apscl2026</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>

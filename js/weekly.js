@@ -79,7 +79,7 @@ export async function generateWeeklyReport() {
 
   if (!tableBody) return;
 
-  tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 24px; color: var(--text-muted);">Generating weekly maintenance record...</td></tr>`;
+  tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 24px; color: var(--text-muted);">Generating weekly maintenance record...</td></tr>`;
 
   try {
     const allRecords = await getRecords({ limit: 300 });
@@ -88,7 +88,7 @@ export async function generateWeeklyReport() {
     currentWeeklyRecords = weekRecords;
 
     if (weekRecords.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 32px; color: var(--text-muted);">No maintenance work logged between ${range.displayStart} and ${range.displayEnd}.</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 32px; color: var(--text-muted);">No maintenance work logged between ${range.displayStart} and ${range.displayEnd}.</td></tr>`;
       return;
     }
 
@@ -100,14 +100,12 @@ export async function generateWeeklyReport() {
         <td>${r.equipment_name}</td>
         <td><code style="font-family: monospace; font-size: 11.5px;">${r.kks_code || '—'}</code></td>
         <td style="line-height: 1.45;">${r.work_description}</td>
-        <td style="white-space: nowrap; text-align: center;">${r.work_time_from || '—'}</td>
-        <td style="white-space: nowrap; text-align: center;">${r.work_time_to || '—'}</td>
         <td>${r.remarks || '—'}</td>
       </tr>
     `).join('');
 
   } catch (err) {
-    tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: #dc2626; padding: 20px;">Failed to generate report: ${err.message}</td></tr>`;
+    tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #dc2626; padding: 20px;">Failed to generate report: ${err.message}</td></tr>`;
   }
 }
 
@@ -117,7 +115,7 @@ function exportWeeklyCsv() {
     return;
   }
 
-  const headers = ['Date', 'Plant Area', 'TR / Schedule No', 'Equipment Name', 'KKS Code', 'Description of Maintenance Work', 'Time From', 'Time To', 'Remarks', 'Status'];
+  const headers = ['Date', 'Plant Area', 'TR / Schedule No', 'Equipment Name', 'KKS Code', 'Description of Maintenance Work', 'Remarks', 'Status'];
   const rows = currentWeeklyRecords.map(r => [
     `"${r.record_date}"`,
     `"${r.plant_area}"`,
@@ -125,8 +123,6 @@ function exportWeeklyCsv() {
     `"${r.equipment_name.replace(/"/g, '""')}"`,
     `"${r.kks_code || ''}"`,
     `"${r.work_description.replace(/"/g, '""')}"`,
-    `"${r.work_time_from || ''}"`,
-    `"${r.work_time_to || ''}"`,
     `"${(r.remarks || '').replace(/"/g, '""')}"`,
     `"${r.status}"`
   ]);

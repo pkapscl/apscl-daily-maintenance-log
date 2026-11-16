@@ -36,8 +36,11 @@ export function initSupabase() {
     isConnected = false;
   }
 
-  // Initialize local storage seeds if empty
-  if (!localStorage.getItem(STORAGE_KEYS.LOCAL_RECORDS)) {
+  // Wipe legacy sample records if present to start with clean database
+  if (!localStorage.getItem('apscl_reset_clean_data_2026')) {
+    localStorage.setItem(STORAGE_KEYS.LOCAL_RECORDS, JSON.stringify([]));
+    localStorage.setItem('apscl_reset_clean_data_2026', 'true');
+  } else if (!localStorage.getItem(STORAGE_KEYS.LOCAL_RECORDS)) {
     localStorage.setItem(STORAGE_KEYS.LOCAL_RECORDS, JSON.stringify(DEFAULT_RECORDS));
   }
   if (!localStorage.getItem(STORAGE_KEYS.LOCAL_EQUIPMENT)) {
@@ -128,37 +131,40 @@ export async function getRecords(options = {}) {
 }
 
 export async function addRecord(record) {
+  const localId = 'rec-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7);
   const newRecord = {
     ...record,
     status: record.status || 'completed',
     created_at: new Date().toISOString()
   };
 
+  // Instant local commit for ultra-fast responsiveness
+  const local = JSON.parse(localStorage.getItem(STORAGE_KEYS.LOCAL_RECORDS) || '[]');
+  const optimisticRecord = { ...newRecord, id: localId };
+  local.unshift(optimisticRecord);
+  localStorage.setItem(STORAGE_KEYS.LOCAL_RECORDS, JSON.stringify(local));
+
+  // Asynchronous background sync to Supabase database
   if (supabaseClient) {
-    try {
-      const { data, error } = await supabaseClient
-        .from('maintenance_records')
-        .insert([newRecord])
-        .select()
-        .single();
-      if (!error && data) {
-        // Also update local storage cache
-        const local = JSON.parse(localStorage.getItem(STORAGE_KEYS.LOCAL_RECORDS) || '[]');
-        local.unshift(data);
-        localStorage.setItem(STORAGE_KEYS.LOCAL_RECORDS, JSON.stringify(local));
-        return data;
-      }
-    } catch (err) {
-      console.warn('[Supabase API] Failed insert, saving locally:', err);
-    }
+    supabaseClient
+      .from('maintenance_records')
+      .insert([newRecord])
+      .select()
+      .single()
+      .then(({ data, error }) => {
+        if (!error && data) {
+          const currentLocal = JSON.parse(localStorage.getItem(STORAGE_KEYS.LOCAL_RECORDS) || '[]');
+          const idx = currentLocal.findIndex(r => r.id === localId);
+          if (idx !== -1) {
+            currentLocal[idx] = data;
+            localStorage.setItem(STORAGE_KEYS.LOCAL_RECORDS, JSON.stringify(currentLocal));
+          }
+        }
+      })
+      .catch(err => console.warn('[Supabase API] Sync error:', err));
   }
 
-  // Local fallback
-  const localRecord = { ...newRecord, id: 'local-' + Date.now() };
-  const local = JSON.parse(localStorage.getItem(STORAGE_KEYS.LOCAL_RECORDS) || '[]');
-  local.unshift(localRecord);
-  localStorage.setItem(STORAGE_KEYS.LOCAL_RECORDS, JSON.stringify(local));
-  return localRecord;
+  return optimisticRecord;
 }
 
 export async function updateRecord(id, updates) {

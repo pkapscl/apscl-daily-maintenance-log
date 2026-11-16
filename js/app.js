@@ -5,6 +5,9 @@ import { initDailyLog, loadRecords } from './daily-log.js';
 import { initPendingWorks, loadPendingWorks } from './pending.js';
 import { initWeeklyReport, generateWeeklyReport } from './weekly.js';
 import { initDocumentCenter, loadDocumentList } from './documents.js';
+import { AUTH_USERS } from './mock-data.js';
+
+const AUTH_STORAGE_KEY = 'apscl_auth_session';
 
 // Global Toast Notification Helper
 window.showToast = function(message, type = 'info') {
@@ -13,9 +16,7 @@ window.showToast = function(message, type = 'info') {
 
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
-  toast.innerHTML = `
-    <span>${message}</span>
-  `;
+  toast.innerHTML = `<span>${message}</span>`;
 
   container.appendChild(toast);
   setTimeout(() => {
@@ -54,11 +55,14 @@ window.switchView = function(viewName) {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Initialize Supabase
+  // 1. Initialize Supabase Client
   const config = initSupabase();
   updateDbStatusUI(config.isConnected);
 
-  // 2. Setup Header Navigation Links
+  // 2. Setup Authentication System
+  setupAuth();
+
+  // 3. Setup Header Navigation Links
   document.querySelectorAll('.nav-item').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
@@ -67,18 +71,124 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 3. Setup Database Config Modal
+  // 4. Setup Database Config Modal
   setupDbModal();
 
-  // 4. Initialize Each Component Module
+  // 5. Initialize View Modules
   initDailyLog();
   initPendingWorks();
   initWeeklyReport();
   initDocumentCenter();
 
-  // 5. Default view
+  // 6. Default view
   window.switchView('daily-log');
 });
+
+// ======================== Authentication Management ========================
+
+function getActiveSession() {
+  const localSession = localStorage.getItem(AUTH_STORAGE_KEY);
+  if (localSession) {
+    try { return JSON.parse(localSession); } catch (e) {}
+  }
+  const sessionSession = sessionStorage.getItem(AUTH_STORAGE_KEY);
+  if (sessionSession) {
+    try { return JSON.parse(sessionSession); } catch (e) {}
+  }
+  return null;
+}
+
+function setupAuth() {
+  const loginOverlay = document.getElementById('login-modal-overlay');
+  const loginForm = document.getElementById('login-form');
+  const userIdInput = document.getElementById('login-username');
+  const passwordInput = document.getElementById('login-password');
+  const rememberCheckbox = document.getElementById('login-remember');
+  const logoutBtn = document.getElementById('logout-btn');
+  const userDisplay = document.getElementById('logged-in-user-tag');
+
+  const currentSession = getActiveSession();
+
+  if (currentSession) {
+    if (loginOverlay) loginOverlay.style.display = 'none';
+    if (userDisplay) {
+      userDisplay.textContent = `👤 ${currentSession.name} (${currentSession.role})`;
+      userDisplay.style.display = 'inline-flex';
+    }
+    if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+  } else {
+    if (loginOverlay) loginOverlay.style.display = 'flex';
+    if (userDisplay) userDisplay.style.display = 'none';
+    if (logoutBtn) logoutBtn.style.display = 'none';
+  }
+
+  // Handle Login Submit
+  if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const u = userIdInput.value.trim();
+      const p = passwordInput.value.trim();
+      const remember = rememberCheckbox ? rememberCheckbox.checked : true;
+
+      const foundUser = AUTH_USERS.find(user => user.userId.toLowerCase() === u.toLowerCase() && user.password === p);
+
+      if (foundUser) {
+        const sessionData = {
+          userId: foundUser.userId,
+          name: foundUser.name,
+          role: foundUser.role,
+          loginTime: new Date().toISOString()
+        };
+
+        if (remember) {
+          localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(sessionData));
+          sessionStorage.removeItem(AUTH_STORAGE_KEY);
+        } else {
+          sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(sessionData));
+          localStorage.removeItem(AUTH_STORAGE_KEY);
+        }
+
+        loginOverlay.style.display = 'none';
+        if (userDisplay) {
+          userDisplay.textContent = `👤 ${foundUser.name} (${foundUser.role})`;
+          userDisplay.style.display = 'inline-flex';
+        }
+        if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+
+        window.showToast(`Welcome, ${foundUser.name}!`, 'success');
+        loadRecords();
+      } else {
+        window.showToast('Invalid User ID or Password. Check credentials below.', 'error');
+      }
+    });
+  }
+
+  // Handle Logout
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem(AUTH_STORAGE_KEY);
+      sessionStorage.removeItem(AUTH_STORAGE_KEY);
+      if (userDisplay) userDisplay.style.display = 'none';
+      if (logoutBtn) logoutBtn.style.display = 'none';
+      if (loginOverlay) {
+        loginOverlay.style.display = 'flex';
+        if (userIdInput) userIdInput.value = '';
+        if (passwordInput) passwordInput.value = '';
+      }
+      window.showToast('Logged out successfully.', 'info');
+    });
+  }
+
+  // Quick credentials filler helper buttons
+  document.querySelectorAll('.quick-fill-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const u = btn.getAttribute('data-u');
+      const p = btn.getAttribute('data-p');
+      if (userIdInput) userIdInput.value = u;
+      if (passwordInput) passwordInput.value = p;
+    });
+  });
+}
 
 function updateDbStatusUI(connected) {
   const dot = document.getElementById('db-status-dot');

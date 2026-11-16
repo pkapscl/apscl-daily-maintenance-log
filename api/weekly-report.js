@@ -63,7 +63,7 @@ export default async function handler(req, res) {
             success: true,
             meta: {
                 organization: 'Ashuganj Power Station Company Limited (APSCL)',
-                division: 'Mechanical (GT, HRSG & Aux.), North, Zone-B',
+                division: 'Mechanical (ST & Aux.), North, Zone-B',
                 location: 'Ashuganj, Brahmanbaria-3402',
                 weekNumber: parseInt(week, 10),
                 year: parseInt(year, 10),

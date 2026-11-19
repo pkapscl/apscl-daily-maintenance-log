@@ -33,7 +33,7 @@
     </nav>
 
     <div class="header-meta">
-      <span class="division-tag">ST &amp; Aux.), North, Zone-B</span>
+      <span class="division-tag">Mech, (ST &amp; Auxiliary), Zone-B, APSCL</span>
       <span id="logged-in-user-tag" style="display: none; background: rgba(31, 95, 191, 0.45); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 500; color: #fff;"></span>
       <button id="logout-btn" class="btn btn-secondary" style="display: none; padding: 4px 10px; font-size: 12px; height: 28px; background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.25);">Sign Out</button>
       <button id="db-settings-btn" class="db-status-btn" title="Configure Supabase Connection">
@@ -159,7 +159,7 @@
                 <th style="width: 180px;">Equipment</th>
                 <th style="width: 130px;">KKS</th>
                 <th>Work done</th>
-                <th style="width: 90px; text-align: right;">Actions</th>
+                <th style="width: 175px; text-align: right;">Actions (সম্পাদন / ডিলেট)</th>
               </tr>
             </thead>
             <tbody id="records-table-body">
@@ -223,7 +223,7 @@
       <div class="weekly-report-card">
         <div class="report-header-block">
           <h2>Weekly Maintenance Record</h2>
-          <div class="org-title">Mechanical (ST &amp; Aux.), North, Zone-B</div>
+          <div class="org-title">Mech, (ST &amp; Auxiliary), Zone-B, APSCL</div>
           <div class="org-subtitle">Ashuganj Power Station Company Limited (APSCL)</div>
           <div class="org-subtitle">Ashuganj, Brahmanbaria-3402</div>
         </div>
@@ -434,6 +434,14 @@
           <button type="button" class="quick-fill-btn" data-u="engineer2" data-p="north@apscl2026" style="text-align: left; display: flex; justify-content: space-between; align-items: center; padding: 7px 10px;">
             <span><strong>engineer2</strong> <span style="color: var(--text-muted); font-size: 11px;">(Site Engineer)</span></span>
             <span style="font-family: monospace; font-size: 11px; color: var(--primary-blue);">north@apscl2026</span>
+          </button>
+          <button type="button" class="quick-fill-btn" data-u="MGTNS01" data-p="apscl@mgt123" style="text-align: left; display: flex; justify-content: space-between; align-items: center; padding: 7px 10px;">
+            <span><strong>MGTNS01</strong> <span style="color: var(--text-muted); font-size: 11px;">(Staff - GT Shift) [সম্পাদন/ডিলেট Access]</span></span>
+            <span style="font-family: monospace; font-size: 11px; color: var(--primary-blue);">apscl@mgt123</span>
+          </button>
+          <button type="button" class="quick-fill-btn" data-u="MSTNS01" data-p="apscl@mst123" style="text-align: left; display: flex; justify-content: space-between; align-items: center; padding: 7px 10px;">
+            <span><strong>MSTNS01</strong> <span style="color: var(--text-muted); font-size: 11px;">(Staff - ST Shift) [সম্পাদন/ডিলেট Access]</span></span>
+            <span style="font-family: monospace; font-size: 11px; color: var(--primary-blue);">apscl@mst123</span>
           </button>
         </div>
       </div>

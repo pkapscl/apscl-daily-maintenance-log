@@ -277,7 +277,7 @@ async function handleSave(status = 'completed') {
   try {
     if (isEditing) {
       const updated = await updateRecord(currentEditId, payload);
-      window.showToast('Record updated successfully!', 'success');
+      window.showToast('রেকর্ড সফলভাবে সম্পাদন করা হয়েছে! (Record updated successfully)', 'success');
       const idx = allRecordsCache.findIndex(r => r.id === currentEditId);
       if (idx !== -1) allRecordsCache[idx] = updated;
       renderTableRows(allRecordsCache);
@@ -376,12 +376,16 @@ function renderTableRows(records) {
         ${r.remarks ? `<div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;"><em>Remarks: ${r.remarks}</em></div>` : ''}
       </td>
       <td style="white-space: nowrap; text-align: right;">
-        <button class="btn btn-icon edit-rec-btn" data-id="${r.id}" title="Edit Record">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-        </button>
-        <button class="btn btn-icon delete-rec-btn" data-id="${r.id}" title="Delete Record" style="color: #dc2626;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-        </button>
+        <div style="display: inline-flex; gap: 6px; align-items: center; justify-content: flex-end;">
+          <button type="button" class="btn btn-secondary edit-rec-btn" data-id="${r.id}" title="সম্পাদন / Edit Record" style="padding: 4px 10px; font-size: 12px; height: 30px; display: inline-flex; align-items: center; gap: 5px; font-weight: 600; color: #1f5fbf; background: #eef4ff; border: 1px solid #c7d9fe; border-radius: 6px; cursor: pointer;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            <span>সম্পাদন</span>
+          </button>
+          <button type="button" class="btn btn-secondary delete-rec-btn" data-id="${r.id}" title="ডিলেট / Delete Record" style="padding: 4px 10px; font-size: 12px; height: 30px; display: inline-flex; align-items: center; gap: 5px; font-weight: 600; color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; cursor: pointer;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            <span>ডিলেট</span>
+          </button>
+        </div>
       </td>
     </tr>
   `).join('');
@@ -390,18 +394,23 @@ function renderTableRows(records) {
     btn.addEventListener('click', () => {
       const id = btn.getAttribute('data-id');
       const item = allRecordsCache.find(x => x.id === id);
-      if (item) populateFormForEdit(item);
+      if (item) {
+        populateFormForEdit(item);
+        window.showToast(`সম্পাদনা মোড সক্রিয়: "${item.equipment_name}" এডিট করা হচ্ছে`, 'info');
+      }
     });
   });
 
   tableBody.querySelectorAll('.delete-rec-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const id = btn.getAttribute('data-id');
-      if (confirm('Are you sure you want to delete this maintenance record?')) {
+      const item = allRecordsCache.find(x => x.id === id);
+      const equipName = item ? item.equipment_name : 'record';
+      if (confirm(`আপনি কি নিশ্চিতভাবে এই রেকর্ডটি ডিলেট করতে চান?\nAre you sure you want to delete this record (${equipName})?`)) {
         await deleteRecord(id);
         allRecordsCache = allRecordsCache.filter(r => r.id !== id);
         renderTableRows(allRecordsCache);
-        window.showToast('Record deleted.', 'info');
+        window.showToast('রেকর্ডটি সফলভাবে ডিলেট করা হয়েছে! (Record deleted)', 'info');
       }
     });
   });
@@ -418,10 +427,10 @@ function populateFormForEdit(record) {
   if (document.getElementById('log-remarks')) document.getElementById('log-remarks').value = record.remarks || '';
 
   const formTitle = document.getElementById('form-card-title');
-  if (formTitle) formTitle.textContent = 'Edit maintenance record';
+  if (formTitle) formTitle.innerHTML = `Edit maintenance record <span style="font-size: 13px; color: var(--primary-blue); font-weight: 600;">(সম্পাদনা মোড)</span>`;
 
   const saveBtn = document.getElementById('save-entry-btn');
-  if (saveBtn) saveBtn.textContent = 'Update entry';
+  if (saveBtn) saveBtn.innerHTML = `Update entry (সম্পাদন সম্পন্ন)`;
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
   triggerSuggestionsUpdate();

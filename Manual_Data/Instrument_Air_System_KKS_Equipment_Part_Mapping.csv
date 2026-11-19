@@ -1,0 +1,163 @@
+# ASHUGANJ POWER STATION COMPANY LIMITED (APSCL)
+# Plant: Ashuganj North CCGT 450 MW | Mechanical Zone-B
+# Source P&ID: 07485-20-QF_-MDD-TRE-113 (Sheets 01 to 04)
+# System: Instrument Air System (KKS Code Prefix: 20QFA / 20QFB / 20SCA)
+# Document Mapping: Plant/Area | Equipment Name | Equipment KKS | Sub-Assembly / Part Name | Part KKS No. | Category | Function
+
+Plant / Area,Equipment Name,Equipment KKS,Sub-Assembly / Part Name,Part KKS No.,Category,Function / Description
+Instrument Air System,Compressor Supply Header,20SCA20,Manual Drain Valve,20SCA20AA403,Drain Valve,"1"" Manual drain valve on 2"" supply line 20SCA20 BR001"
+Instrument Air System,Instrument Air Dryer #1 Package,20QFA01,Inlet Pre-Filter Unit,20QFA01AT001,Filter,"Air inlet pre-filter for Dryer #1, particulate & oil removal"
+Instrument Air System,Instrument Air Dryer #1 Package,20QFA01,Inlet Isolation / Control Valve,20QFA01AA091,Pneumatic Valve,"2""x1-1/2"" Air inlet automatic control/isolation valve"
+Instrument Air System,Instrument Air Dryer #1 Package,20QFA01,Inlet Manual Drain Valve,20QFA01AA401,Drain Valve,"1/2"" Manual drain valve before Dryer #1"
+Instrument Air System,Instrument Air Dryer #1 Package,20QFA01,Desiccant Adsorption Tower #1,20QFA01BB001,Adsorber Tower,Twin-tower desiccant air drying column A/B
+Instrument Air System,Instrument Air Dryer #1 Package,20QFA01,After-Filter Unit,20QFA01AT002,Filter,"Discharge after-filter for Dryer #1, desiccant dust removal"
+Instrument Air System,Instrument Air Dryer #1 Package,20QFA01,Outlet Isolation / Control Valve,20QFA01AA092,Pneumatic Valve,"2""x1-1/2"" Air outlet automatic control/isolation valve"
+Instrument Air System,Instrument Air Dryer #1 Package,20QFA01,Test Point 1,TP-QFA1-1,Instrumentation,Inlet air sampling & test point
+Instrument Air System,Instrument Air Dryer #1 Package,20QFA01,Test Point 2,TP-QFA1-2,Instrumentation,Mid-stage dew point / air test point
+Instrument Air System,Instrument Air Dryer #1 Package,20QFA01,Test Point 3,TP-QFA1-3,Instrumentation,After-filter outlet air test point
+Instrument Air System,Instrument Air Dryer #2 Package,20QFA02,Inlet Pre-Filter Unit,20QFA02AT001,Filter,"Air inlet pre-filter for Dryer #2, particulate & oil removal"
+Instrument Air System,Instrument Air Dryer #2 Package,20QFA02,Inlet Isolation / Control Valve,20QFA02AA091,Pneumatic Valve,"2""x1-1/2"" Air inlet automatic control/isolation valve"
+Instrument Air System,Instrument Air Dryer #2 Package,20QFA02,Inlet Manual Drain Valve,20QFA02AA401,Drain Valve,"1/2"" Manual drain valve before Dryer #2"
+Instrument Air System,Instrument Air Dryer #2 Package,20QFA02,Desiccant Adsorption Tower #2,20QFA02BB001,Adsorber Tower,Twin-tower desiccant air drying column A/B
+Instrument Air System,Instrument Air Dryer #2 Package,20QFA02,After-Filter Unit,20QFA02AT002,Filter,"Discharge after-filter for Dryer #2, desiccant dust removal"
+Instrument Air System,Instrument Air Dryer #2 Package,20QFA02,Outlet Isolation / Control Valve,20QFA02AA092,Pneumatic Valve,"2""x1-1/2"" Air outlet automatic control/isolation valve"
+Instrument Air System,Instrument Air Dryer #2 Package,20QFA02,Test Point 1,TP-QFA2-1,Instrumentation,Inlet air sampling & test point
+Instrument Air System,Instrument Air Dryer #2 Package,20QFA02,Test Point 2,TP-QFA2-2,Instrumentation,Mid-stage dew point / air test point
+Instrument Air System,Instrument Air Dryer #2 Package,20QFA02,Test Point 3,TP-QFA2-3,Instrumentation,After-filter outlet air test point
+Instrument Air System,Dryer Common Discharge Header,20QFA20,Header Check Valve (Non-Return),20QFA20AA101,Check Valve,2"" Non-return valve upstream of receiver inlet
+Instrument Air System,Dryer Common Discharge Header,20QFA20,Receiver Inlet Isolation Valve,20QFA20AA001,Isolation Valve,2"" Manual ball/gate isolation valve to receiver
+Instrument Air System,Dryer Common Discharge Header,20QFA20,Inlet Drain Valve,20QFA20AA401,Drain Valve,"1"" Manual drain valve on line 20QFA20 BR401"
+Instrument Air System,Instrument Air Receiver,20QFA20BB001,Main Vessel Body,20QFA20BB001,Pressure Vessel,"Vertical air storage receiver vessel (Design: 10.0 barg, 70°C)"
+Instrument Air System,Instrument Air Receiver,20QFA20BB001,Safety Relief Valve,20QFA20AA901,Safety Valve,"Top safety valve, PSET = 10.0 barg, discharge 1-1/2"" to atmosphere"
+Instrument Air System,Instrument Air Receiver,20QFA20BB001,Pressure Transmitter 1 (PTCI),20QFA20CP001,Transmitter,Receiver pressure transmitter channel 1
+Instrument Air System,Instrument Air Receiver,20QFA20BB001,PT-001 Root Isolation Valve,20QFA20AA701,Instrument Valve,"3/4"" Instrument root needle valve for PTCI 20QFA20CP001"
+Instrument Air System,Instrument Air Receiver,20QFA20BB001,Pressure Transmitter 2 (PTCI),20QFA20CP002,Transmitter,Receiver pressure transmitter channel 2 (Redundant)
+Instrument Air System,Instrument Air Receiver,20QFA20BB001,PT-002 Root Isolation Valve,20QFA20AA702,Instrument Valve,"3/4"" Instrument root needle valve for PTCI 20QFA20CP002"
+Instrument Air System,Instrument Air Receiver,20QFA20BB001,Local Pressure Indicator (PI),20QFA20CP501,Gauge,Local analog Bourdon tube pressure gauge on receiver
+Instrument Air System,Instrument Air Receiver,20QFA20BB001,PI-501 Root Isolation Valve,20QFA20AA703,Instrument Valve,"3/4"" Instrument root needle valve for PI 20QFA20CP501"
+Instrument Air System,Instrument Air Receiver,20QFA20BB001,Bottom Primary Drain Valve,20QFA20AA402,Drain Valve,"1"" Drain isolation valve on 20QFA20 BR401"
+Instrument Air System,Instrument Air Receiver,20QFA20BB001,Automatic Condensate Drain Trap,20QFA20AT401,Condensate Trap,Automatic float/electronic moisture separator trap
+Instrument Air System,Instrument Air Receiver,20QFA20BB001,Drain Bypass / Secondary Valve,20QFA20AA403,Drain Valve,"1"" Manual drain bypass valve on 20QFA20 BR403"
+Instrument Air System,Receiver Discharge Main Header,20QFB10,Receiver Outlet Main Isolation Valve,20QFB10AA001,Isolation Valve,"2-1/2"" Main header isolation valve leaving receiver"
+Instrument Air System,Receiver Discharge Main Header,20QFB10,Main Header Drain Valve,20QFB10AA401,Drain Valve,"1"" Low-point drain valve on distribution header"
+Instrument Air System,Receiver Discharge Main Header,20QFB10,Distribution Pressure Transmitter,20QFB01CP001,Transmitter,"Distribution header pressure transmitter (PTIA, Note 4)"
+Instrument Air System,Receiver Discharge Main Header,20QFB10,PT-01 Root Isolation Valve,20QFB10AA701,Instrument Valve,"3/4"" Instrument root isolation valve for 20QFB01CP001"
+Instrument Air System,Air Distribution Manifold #1,20QFB11BB001,Manifold Inlet Isolation Valve,20QFB11AA001,Isolation Valve,"1-1/2"" Manual inlet isolation valve to distributor #1"
+Instrument Air System,Air Distribution Manifold #1,20QFB11BB001,Manifold Drain Valve,20QFB11AA401,Drain Valve,"1"" Manual bottom drain valve on 20QFB11"
+Instrument Air System,Air Distribution Manifold #1,20QFB11BB001,Distributor Column Vessel,20QFB11BB001,Manifold Column,Vertical air distribution manifold / collector column
+Instrument Air System,Air Distribution Manifold #1,20QFB11BB001,Turbine Extraction Consumer Valve,20LAB30AA081,Air Consumer Valve,Air supply to turbine extraction steam valve
+Instrument Air System,Air Distribution Manifold #1,20QFB11BB001,Turbine Extraction Consumer Valve,20LAB30AA181,Air Consumer Valve,Air supply to turbine extraction non-return valve
+Instrument Air System,Air Distribution Manifold #1,20QFB11BB001,Condensate Polishing Consumer Valve,20LAE10AA081,Air Consumer Valve,Air supply to condensate polishing isolation valve
+Instrument Air System,Air Distribution Manifold #1,20QFB11BB001,Condensate Polishing Consumer Valve,20LAE10AA082,Air Consumer Valve,Air supply to condensate polishing bypass valve
+Instrument Air System,Air Distribution Manifold #1,20QFB11BB001,Boiler Feedwater Consumer Valve,20LBA30AA081,Air Consumer Valve,Air supply to feed pump discharge control valve
+Instrument Air System,Air Distribution Manifold #1,20QFB11BB001,LP Feedwater Consumer Valve,20LBB30AA581,Air Consumer Valve,Air supply to LP economizer stop/check valve
+Instrument Air System,Air Distribution Manifold #1,20QFB11BB001,Feedwater System Consumer Valve,20LBC30AA181,Air Consumer Valve,Air supply to feedwater control valve
+Instrument Air System,Air Distribution Manifold #1,20QFB11BB001,Turbine Drain Consumer Valve,20HAN40AA481,Air Consumer Valve,Air supply to steam turbine casing warm-up drain valve
+Instrument Air System,Air Distribution Manifold #2,20QFB21BB001,Manifold Inlet Isolation Valve,20QFB21AA001,Isolation Valve,"1-1/2"" Manual inlet isolation valve to distributor #2"
+Instrument Air System,Air Distribution Manifold #2,20QFB21BB001,Manifold Drain Valve,20QFB21AA401,Drain Valve,"1"" Manual bottom drain valve on 20QFB21"
+Instrument Air System,Air Distribution Manifold #2,20QFB21BB001,Distributor Column Vessel,20QFB21BB001,Manifold Column,Vertical air distribution manifold / collector column
+Instrument Air System,Air Distribution Manifold #2,20QFB21BB001,Feedwater Heater 1 Control Valve,20LAC40AA081,Air Consumer Valve,Air supply to HP heater #1 extraction control valve
+Instrument Air System,Air Distribution Manifold #2,20QFB21BB001,Feedwater Heater 1 Bypass Valve,20LAC40AA082,Air Consumer Valve,Air supply to HP heater #1 bypass valve
+Instrument Air System,Air Distribution Manifold #2,20QFB21BB001,Feedwater Heater 2 Control Valve,20LAC40AA181,Air Consumer Valve,Air supply to HP heater #2 extraction control valve
+Instrument Air System,Air Distribution Manifold #2,20QFB21BB001,Feedwater Heater 2 Bypass Valve,20LAC40AA182,Air Consumer Valve,Air supply to HP heater #2 bypass valve
+Instrument Air System,Air Distribution Manifold #2,20QFB21BB001,Turbine Casing Drain Valve,20HAC40AA081,Air Consumer Valve,Air supply to HP turbine casing drain valve
+Instrument Air System,Air Distribution Manifold #2,20QFB21BB001,Turbine Valve Chest Drain Valve,20HAC40AA181,Air Consumer Valve,Air supply to valve chest drain valve
+Instrument Air System,Air Distribution Manifold #2,20QFB21BB001,Feedwater Flow Regulating Valve,20LBA40AA581,Air Consumer Valve,Air supply to feed line flow regulator
+Instrument Air System,Distribution Header Branch 22,20QFB22,Branch Root Isolation Valve,20QFB22AA001,Isolation Valve,"1"" Root isolation valve on line 20QFB22 BR001"
+Instrument Air System,Distribution Header Branch 22,20QFB22,Branch Drain Valve,20QFB22AA401,Drain Valve,"1"" Manual drain valve on line 20QFB22"
+Instrument Air System,Distribution Header Branch 22,20QFB22,Takeoff Isolation Valve 1,20QFB22AA001,Isolation Valve,"1/2"" Air tap feeding consumer 20LAB11AA081"
+Instrument Air System,Distribution Header Branch 22,20QFB22,Takeoff Isolation Valve 2,20QFB22AA002,Isolation Valve,"1/2"" Air tap feeding consumer 20LAB12AA081"
+Instrument Air System,Distribution Header Branch 22,20QFB22,Takeoff Isolation Valve 3,20QFB22AA003,Isolation Valve,"1/2"" Air tap feeding consumer 20LBG10AA082"
+Instrument Air System,Distribution Header Branch 22,20QFB22,Takeoff Isolation Valve 4,20QFB22AA004,Isolation Valve,"1/2"" Air tap feeding consumer 20HAN90AA081"
+Instrument Air System,Distribution Header Branch 23,20QFB23,Branch Root Isolation Valve,20QFB23AA001,Isolation Valve,"1"" Root isolation valve on line 20QFB23 BR001"
+Instrument Air System,Distribution Header Branch 23,20QFB23,Branch Drain Valve,20QFB23AA401,Drain Valve,"1"" Manual drain valve on line 20QFB23"
+Instrument Air System,Distribution Header Branch 23,20QFB23,Takeoff Isolation Valve 1,20QFB23AA001,Isolation Valve,"1/2"" Air tap feeding consumer 20HAN90AA881"
+Instrument Air System,Distribution Header Branch 23,20QFB23,Takeoff Isolation Valve 2,20QFB23AA002,Isolation Valve,"1/2"" Air tap feeding consumer 20HAN72AA081"
+Instrument Air System,Distribution Header Branch 23,20QFB23,Takeoff Isolation Valve 3,20QFB23AA003,Isolation Valve,"1/2"" Air tap feeding consumer 20HAN71AA081"
+Instrument Air System,Chemical Dosing Air Feed,20QFB24,Chemical Dosing Isolation Valve,20QFB24AA001,Isolation Valve,"3/4"" Air supply valve to chemical dosing skid (QC)"
+Instrument Air System,CEMS Air Feed,20QFB10,CEMS Continuous Air Supply Valve,V-0748510150-0006,Manual Valve,3/4"" Needle isolation valve to Continuous Emission Monitoring System
+Instrument Air System,Air Distribution Manifold #3,20QFB31BB001,Manifold Inlet Isolation Valve,20QFB31AA001,Isolation Valve,"1"" Manual inlet isolation valve to distributor #3"
+Instrument Air System,Air Distribution Manifold #3,20QFB31BB001,Manifold Drain Valve,20QFB31AA401,Drain Valve,"1"" Manual bottom drain valve on 20QFB31"
+Instrument Air System,Air Distribution Manifold #3,20QFB31BB001,Distributor Column Vessel,20QFB31BB001,Manifold Column,Vertical air distribution manifold / collector column
+Instrument Air System,Air Distribution Manifold #3,20QFB31BB001,Gas Turbine Fuel Gas Valve,20EKT01AA481,Air Consumer Valve,Air supply to fuel gas purge valve 1
+Instrument Air System,Air Distribution Manifold #3,20QFB31BB001,Gas Turbine Fuel Gas Valve,20EKT02AA481,Air Consumer Valve,Air supply to fuel gas purge valve 2
+Instrument Air System,Air Distribution Manifold #3,20QFB31BB001,Fuel Gas Vent Valve,20EKG20AA081,Air Consumer Valve,Air supply to fuel gas vent valve
+Instrument Air System,Air Distribution Manifold #3,20QFB31BB001,Fuel Gas Distribution Valve,20EKT21AA481,Air Consumer Valve,Air supply to fuel gas manifold valve
+Instrument Air System,Air Distribution Manifold #3,20QFB31BB001,Fuel Gas Distribution Valve,20EKT22AA481,Air Consumer Valve,Air supply to fuel gas manifold valve
+Instrument Air System,Air Distribution Manifold #3,20QFB31BB001,Generator Cooling Consumer Valve,20GHC15AA081,Air Consumer Valve,Air supply to generator hydrogen cooling valve
+Instrument Air System,Air Distribution Manifold #4,20QFB32BB001,Manifold Inlet Isolation Valve,20QFB32AA001,Isolation Valve,"1"" Manual inlet isolation valve to distributor #4"
+Instrument Air System,Air Distribution Manifold #4,20QFB32BB001,Manifold Drain Valve,20QFB32AA401,Drain Valve,"1"" Manual bottom drain valve on 20QFB32"
+Instrument Air System,Air Distribution Manifold #4,20QFB32BB001,Distributor Column Vessel,20QFB32BB001,Manifold Column,Vertical air distribution manifold / collector column
+Instrument Air System,Air Distribution Manifold #4,20QFB32BB001,Fuel Gas Burner Valve 1,20EKT20AA081,Air Consumer Valve,Air supply to pilot burner gas valve
+Instrument Air System,Air Distribution Manifold #4,20QFB32BB001,Fuel Gas Burner Valve 2,20EKT20AA082,Air Consumer Valve,Air supply to main burner gas valve
+Instrument Air System,Air Distribution Manifold #4,20QFB32BB001,Fuel Gas Burner Valve 3,20EKT20AA083,Air Consumer Valve,Air supply to stage gas valve
+Instrument Air System,Air Distribution Manifold #4,20QFB32BB001,Fuel Gas Burner Valve 4,20EKT20AA084,Air Consumer Valve,Air supply to stage gas valve
+Instrument Air System,Air Distribution Manifold #4,20QFB32BB001,Fuel Gas Burner Valve 5,20EKT20AA085,Air Consumer Valve,Air supply to bypass burner gas valve
+Instrument Air System,Air Distribution Manifold #4,20QFB32BB001,Turbine Valve Drain Valve,20HAC20AA081,Air Consumer Valve,Air supply to IP turbine valve drain
+Instrument Air System,Air Distribution Manifold #4,20QFB32BB001,Turbine Valve Drain Valve,20HAC20AA181,Air Consumer Valve,Air supply to LP turbine valve drain
+Instrument Air System,Air Distribution Manifold #5,20QFB12BB001,Manifold Inlet Isolation Valve,20QFB12AA001,Isolation Valve,"1"" Manual inlet isolation valve to distributor #5"
+Instrument Air System,Air Distribution Manifold #5,20QFB12BB001,Manifold Drain Valve,20QFB12AA401,Drain Valve,"1"" Manual bottom drain valve on 20QFB12"
+Instrument Air System,Air Distribution Manifold #5,20QFB12BB001,Distributor Column Vessel,20QFB12BB001,Manifold Column,Vertical air distribution manifold / collector column
+Instrument Air System,Air Distribution Manifold #5,20QFB12BB001,Condensate System Valve,20LBG10AA081,Air Consumer Valve,Air supply to condensate recirculation valve
+Instrument Air System,Air Distribution Manifold #5,20QFB12BB001,Condensate System Valve,20LBG20AA081,Air Consumer Valve,Air supply to condensate polishing inlet
+Instrument Air System,Air Distribution Manifold #5,20QFB12BB001,Condensate System Valve,20LBG20AA082,Air Consumer Valve,Air supply to condensate polishing outlet
+Instrument Air System,Air Distribution Manifold #5,20QFB12BB001,Feedwater System Valve,20LBA91AA081,Air Consumer Valve,Air supply to feedwater warm-up line
+Instrument Air System,Air Distribution Manifold #5,20QFB12BB001,Feedwater System Valve,20LBA92AA081,Air Consumer Valve,Air supply to feedwater vent valve
+Instrument Air System,Air Distribution Manifold #5,20QFB12BB001,Deaerator Drain Valve,20LBC40AA051,Air Consumer Valve,Air supply to deaerator overflow control valve (TP-T810)
+Instrument Air System,Air Distribution Manifold #6,20QFB41BB001,Manifold Inlet Isolation Valve,20QFB41AA001,Isolation Valve,"1"" Manual inlet isolation valve to distributor #6"
+Instrument Air System,Air Distribution Manifold #6,20QFB41BB001,Manifold Drain Valve,20QFB41AA401,Drain Valve,"1"" Manual bottom drain valve on 20QFB41"
+Instrument Air System,Air Distribution Manifold #6,20QFB41BB001,Distributor Column Vessel,20QFB41BB001,Manifold Column,Vertical air distribution manifold / collector column
+Instrument Air System,Air Distribution Manifold #6,20QFB41BB001,Condensate Extraction Valve,20LBC44AA081,Air Consumer Valve,Air supply to LP flash tank drain
+Instrument Air System,Air Distribution Manifold #6,20QFB41BB001,Condensate Extraction Valve,20LBC45AA081,Air Consumer Valve,Air supply to HP flash tank drain
+Instrument Air System,Air Distribution Manifold #6,20QFB41BB001,Steam Turbine HP Bypass Valve,20MAL25AA051,Air Consumer Valve,Air supply to HP bypass spray water valve (TP-T960)
+Instrument Air System,Air Distribution Manifold #6,20QFB41BB001,Steam Turbine LP Bypass Valve,20MAL65AA051,Air Consumer Valve,Air supply to LP bypass spray water valve (TP-T960)
+Instrument Air System,Air Distribution Manifold #6,20QFB41BB001,Generator Hydrogen Seal Oil Valve,20GHC25AA082,Air Consumer Valve,Air supply to seal oil differential pressure regulator
+Instrument Air System,Air Distribution Manifold #7,20QFB42BB001,Manifold Inlet Isolation Valve,20QFB42AA001,Isolation Valve,"1"" Manual inlet isolation valve to distributor #7"
+Instrument Air System,Air Distribution Manifold #7,20QFB42BB001,Manifold Drain Valve,20QFB42AA401,Drain Valve,"1"" Manual bottom drain valve on 20QFB42"
+Instrument Air System,Air Distribution Manifold #7,20QFB42BB001,Distributor Column Vessel,20QFB42BB001,Manifold Column,Vertical air distribution manifold / collector column
+Instrument Air System,Air Distribution Manifold #7,20QFB42BB001,Steam Turbine Gland Steam Valve,20MAW10AA151,Air Consumer Valve,Air supply to gland steam supply regulator (TP-T915)
+Instrument Air System,Air Distribution Manifold #7,20QFB42BB001,Deaerator Level Control Valve 1,20LBC41AA051,Air Consumer Valve,Air supply to deaerator normal level control (TP-T905)
+Instrument Air System,Air Distribution Manifold #7,20QFB42BB001,Deaerator Level Control Valve 2,20LBC42AA051,Air Consumer Valve,Air supply to deaerator high level control (TP-T905)
+Instrument Air System,Air Distribution Manifold #7,20QFB42BB001,Condensate Recirculation Valve,20LCE11AA081,Air Consumer Valve,Air supply to condensate recirculation valve A
+Instrument Air System,Air Distribution Manifold #7,20QFB42BB001,Condensate Recirculation Valve,20LCE11AA082,Air Consumer Valve,Air supply to condensate recirculation valve B
+Instrument Air System,Air Distribution Manifold #7,20QFB42BB001,Condensate Polisher Valve,20LCE12AA081,Air Consumer Valve,Air supply to polish isolation valve A
+Instrument Air System,Air Distribution Manifold #7,20QFB42BB001,Condensate Polisher Valve,20LCE12AA082,Air Consumer Valve,Air supply to polish isolation valve B
+Instrument Air System,Air Distribution Manifold #7,20QFB42BB001,Feedwater Pump Min-Flow Valve,20LBA20AA581,Air Consumer Valve,Air supply to BFP minimum flow valve (TP-T840)
+Instrument Air System,Air Distribution Manifold #8,20QFB51BB001,Manifold Inlet Isolation Valve,20QFB51AA001,Isolation Valve,"1"" Manual inlet isolation valve to distributor #8"
+Instrument Air System,Air Distribution Manifold #8,20QFB51BB001,Manifold Drain Valve,20QFB51AA401,Drain Valve,"1"" Manual bottom drain valve on 20QFB51"
+Instrument Air System,Air Distribution Manifold #8,20QFB51BB001,Distributor Column Vessel,20QFB51BB001,Manifold Column,Vertical air distribution manifold / collector column
+Instrument Air System,Air Distribution Manifold #8,20QFB51BB001,Main Steam Stop Valve Actuator,10MAG10AA051,Air Consumer Valve,Air supply to GT fuel gas trip valve (TP-T802)
+Instrument Air System,Air Distribution Manifold #8,20QFB51BB001,Steam Turbine Trip Valve,10MAJ60AA051,Air Consumer Valve,Air supply to emergency stop valve test actuator
+Instrument Air System,Air Distribution Manifold #8,20QFB51BB001,Turbine Lube Oil Vapor Extractor,20MAL10AA081,Air Consumer Valve,Air supply to lube oil tank extractor damper
+Instrument Air System,Air Distribution Manifold #8,20QFB51BB001,Turbine Lube Oil Purifier Valve,20MAL10AA082,Air Consumer Valve,Air supply to centrifuge lube oil purifier feed
+Instrument Air System,Air Distribution Manifold #8,20QFB51BB001,Lube Oil Temperature Regulating,20MAL20AA081,Air Consumer Valve,Air supply to lube oil cooler bypass regulator (TP-T910)
+Instrument Air System,Air Distribution Manifold #8,20QFB51BB001,Condenser Hotwell Makeup Valve,20LCA50AA081,Air Consumer Valve,Air supply to hotwell demineralized water makeup
+Instrument Air System,Air Distribution Manifold #9,20QFB52BB001,Manifold Inlet Isolation Valve,20QFB52AA001,Isolation Valve,"1"" Manual inlet isolation valve to distributor #9"
+Instrument Air System,Air Distribution Manifold #9,20QFB52BB001,Manifold Drain Valve,20QFB52AA401,Drain Valve,"1"" Manual bottom drain valve on 20QFB52"
+Instrument Air System,Air Distribution Manifold #9,20QFB52BB001,Distributor Column Vessel,20QFB52BB001,Manifold Column,Vertical air distribution manifold / collector column
+Instrument Air System,Air Distribution Manifold #9,20QFB52BB001,Gland Steam Condenser Exhaust,20MAW65AA051,Air Consumer Valve,Air supply to gland steam exhaust valve 1 (TP-T865)
+Instrument Air System,Air Distribution Manifold #9,20QFB52BB001,Gland Steam Condenser Exhaust,20MAW65AA052,Air Consumer Valve,Air supply to gland steam exhaust valve 2 (TP-T867)
+Instrument Air System,Air Distribution Manifold #9,20QFB52BB001,Turbine Lube Oil Supply Valve,20MAL11AA051,Air Consumer Valve,Air supply to bearing lube oil supply regulator
+Instrument Air System,Air Distribution Manifold #9,20QFB52BB001,Turbine Jacking Oil Valve,20MAL22AA051,Air Consumer Valve,Air supply to jacking oil pressure relief
+Instrument Air System,Air Distribution Manifold #9,20QFB52BB001,Turbine Hydraulic Control Valve,20MAL22AA053,Air Consumer Valve,Air supply to hydraulic control return (TP-T922)
+Instrument Air System,Air Distribution Manifold #9,20QFB52BB001,Turbine Hydraulic Control Valve,20MAL22AA054,Air Consumer Valve,Air supply to hydraulic supply header (TP-T928)
+Instrument Air System,Air Distribution Manifold #9,20QFB52BB001,Lube Oil Drain Tank Valve,20MAL26AA051,Air Consumer Valve,Air supply to lube oil dirty oil transfer (TP-T930)
+Instrument Air System,Air Distribution Manifold #9,20QFB52BB001,Lube Oil Filter DP Equalizer,20MAL35AA051,Air Consumer Valve,Air supply to duplex oil filter switchover (TP-T935)
+Instrument Air System,Air Distribution Manifold #9,20QFB52BB001,Control Oil Cooler Valve,20MAL31AA051,Air Consumer Valve,Air supply to control oil cooler thermostatic (TP-T940)
+Instrument Air System,Air Distribution Manifold #9,20QFB52BB001,Oil Mist Eliminator Valve,20MAL50AA051,Air Consumer Valve,Air supply to oil mist vacuum breaker (TP-T954)
+Instrument Air System,Air Distribution Manifold #10,20QFB13BB001,Manifold Inlet Isolation Valve,20QFB13AA001,Isolation Valve,"1"" Manual inlet isolation valve to distributor #10"
+Instrument Air System,Air Distribution Manifold #10,20QFB13BB001,Manifold Drain Valve,20QFB13AA401,Drain Valve,"1"" Manual bottom drain valve on 20QFB13"
+Instrument Air System,Air Distribution Manifold #10,20QFB13BB001,Distributor Column Vessel,20QFB13BB001,Manifold Column,Vertical air distribution manifold / collector column
+Instrument Air System,Air Distribution Manifold #10,20QFB13BB001,Condenser Vacuum Breaker Valve,20LCP10AA081,Air Consumer Valve,Air supply to condenser vacuum breaker valve
+Instrument Air System,Air Distribution Manifold #10,20QFB13BB001,Condenser Sparging Steam Valve,20LCP20AA081,Air Consumer Valve,Air supply to condenser sparging steam valve
+Instrument Air System,Air Distribution Manifold #10,20QFB13BB001,Condensate Pump Discharge Valve,20LCA30AA081,Air Consumer Valve,Air supply to condensate pump recirculation
+Instrument Air System,Air Distribution Manifold #10,20QFB13BB001,Generator Stator Cooling Valve,20GHD35AA081,Air Consumer Valve,Air supply to stator cooling water drain
+Instrument Air System,Air Distribution Manifold #10,20QFB13BB001,Generator Seal Oil Vacuum Tank,20GHC25AA084,Air Consumer Valve,Air supply to vacuum tank float regulator
+Instrument Air System,External Unit: Gas Station,20QFB16,Gas Station Supply Root Valve,20QFB16AA001,Isolation Valve,"1"" Isolation valve feeding gas station supply line"
+Instrument Air System,External Unit: Gas Station,20QFB16,Gas Station Line Drain Valve,20QFB16AA401,Drain Valve,"1"" Drain valve on 20QFB16"
+Instrument Air System,External Unit: Gas Station,20QFB16,Gas Station Boundary Valve,20EKA10AA091,Pneumatic Valve,Boundary pneumatic block valve for fuel gas station (EK)
+Instrument Air System,External Unit: Effluent Treatment,20QFB13,ETP Supply Isolation Valve,20QFB13AA002,Isolation Valve,"1/2"" Supply isolation valve to Effluent Treatment Plant (GN)"
+Instrument Air System,External Unit: Fire Fighting,20QFB10,Fire Fighting Air Supply Valve,20SGA12AA081,Air Consumer Valve,"Air supply to fire water deluge / deluge valve skid (SG)"
+Instrument Air System,External Unit: Isolated Phase Bus,20QFB15,IPB Pressurization Valve 1,20QFB15AA001,Manual Valve,"1"" Manual air supply to Isolated Phase Bus Bar dry air purge"
+Instrument Air System,External Unit: Isolated Phase Bus,20QFB15,IPB Pressurization Valve 2,20QFB15AA002,Manual Valve,"1"" Manual air supply to Isolated Phase Bus Bar dry air purge"
+Instrument Air System,External Unit: Priming System,20QFB50,Priming System Air Supply,20QFB50AA001,Isolation Valve,"1/2"" Supply line 20QFB50 BR002 to vacuum priming system (PA)"

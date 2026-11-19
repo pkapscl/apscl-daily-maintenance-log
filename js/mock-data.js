@@ -49,24 +49,46 @@ export const PLANT_AREAS = [
   'Water Intake'
 ];
 
-// Three Authorized User Accounts
+// Authorized User Accounts (Engineers & Staff Users with full Edit/Delete permissions)
 export const AUTH_USERS = [
   {
     userId: 'admin',
     password: 'apscl@admin123',
     name: 'Executive Engineer',
-    role: 'Administrator'
+    role: 'Administrator',
+    canEdit: true,
+    canDelete: true
   },
   {
     userId: 'engineer1',
     password: 'st@zoneB123',
     name: 'Shift In-Charge',
-    role: 'Maintenance Engineer'
+    role: 'Maintenance Engineer',
+    canEdit: true,
+    canDelete: true
   },
   {
     userId: 'engineer2',
     password: 'north@apscl2026',
     name: 'Site Engineer',
-    role: 'Mechanical Engineer'
+    role: 'Mechanical Engineer',
+    canEdit: true,
+    canDelete: true
+  },
+  {
+    userId: 'MGTNS01',
+    password: 'apscl@mgt123',
+    name: 'MGT North Staff (MGTNS01)',
+    role: 'Maintenance Staff (GT)',
+    canEdit: true,
+    canDelete: true
+  },
+  {
+    userId: 'MSTNS01',
+    password: 'apscl@mst123',
+    name: 'MST North Staff (MSTNS01)',
+    role: 'Maintenance Staff (ST)',
+    canEdit: true,
+    canDelete: true
   }
 ];

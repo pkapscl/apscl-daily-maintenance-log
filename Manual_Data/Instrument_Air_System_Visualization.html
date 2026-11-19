@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APSCL Instrument Air System – P&ID & KKS Mapping Visualization</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+    }
+    .flow-card {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .flow-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(31, 95, 191, 0.3);
+    }
+    .kks-badge {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: 0.05em;
+    }
+    .pipeline-line {
+      stroke-dasharray: 6;
+      animation: dash 1.5s linear infinite;
+    }
+    @keyframes dash {
+      to {
+        stroke-dashoffset: -12;
+      }
+    }
+  </style>
+</head>
+<body class="p-4 sm:p-6 text-slate-100">
+
+  <!-- Header Banner -->
+  <div class="bg-slate-800/90 border border-slate-700 rounded-xl p-5 mb-6 shadow-xl backdrop-blur">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="px-2.5 py-0.5 text-xs font-semibold bg-blue-600/30 text-blue-400 border border-blue-500/40 rounded-full">P&ID 07485-20-QF_-MDD-TRE-113</span>
+          <span class="px-2.5 py-0.5 text-xs font-semibold bg-emerald-600/30 text-emerald-400 border border-emerald-500/40 rounded-full">Zone-B CCGT 450MW</span>
+        </div>
+        <h1 class="text-xl sm:text-2xl font-bold text-white tracking-tight">Instrument Air System: Equipment &amp; Part KKS Hierarchy</h1>
+        <p class="text-xs sm:text-sm text-slate-400">Ashuganj Power Station Company Limited (APSCL) · Mech, (ST &amp; Auxiliary), Zone-B</p>
+      </div>
+      <div class="flex flex-wrap gap-2 text-xs">
+        <div class="bg-slate-900/80 px-3 py-2 rounded-lg border border-slate-700 text-center">
+          <div class="text-slate-400 font-medium">Design Pressure</div>
+          <div class="text-sky-400 font-bold text-sm">10.0 barg</div>
+        </div>
+        <div class="bg-slate-900/80 px-3 py-2 rounded-lg border border-slate-700 text-center">
+          <div class="text-slate-400 font-medium">Design Temp</div>
+          <div class="text-amber-400 font-bold text-sm">70 °C</div>
+        </div>
+        <div class="bg-slate-900/80 px-3 py-2 rounded-lg border border-slate-700 text-center">
+          <div class="text-slate-400 font-medium">Manifolds</div>
+          <div class="text-emerald-400 font-bold text-sm">10 Stations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation View Tabs -->
+  <div class="flex border-b border-slate-700 mb-6 gap-2 sm:gap-6 overflow-x-auto text-sm font-medium">
+    <button onclick="setTab('schematic')" id="tab-schematic" class="tab-btn px-4 py-2 border-b-2 border-blue-500 text-blue-400 flex items-center gap-2">
+      <span>🌐</span> P&amp;ID Schematic Flow Diagram
+    </button>
+    <button onclick="setTab('mapping')" id="tab-mapping" class="tab-btn px-4 py-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2">
+      <span>⚙️</span> Equipment &amp; Part KKS Explorer
+    </button>
+    <button onclick="setTab('matrix')" id="tab-matrix" class="tab-btn px-4 py-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2">
+      <span>📊</span> Full Component Registry (Table)
+    </button>
+    <button onclick="setTab('twoway')" id="tab-twoway" class="tab-btn px-4 py-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2">
+      <span>🔄</span> 2-Way Sync Flow Simulation
+    </button>
+  </div>
+
+  <!-- ======================================================================================= -->
+  <!-- TAB 1: SCHEMATIC FLOW DIAGRAM                                                           -->
+  <!-- ======================================================================================= -->
+  <div id="view-schematic" class="space-y-6">
+    
+    <!-- Visual System Flow Map (Interactive Grid) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+      
+      <!-- Stage 1: Supply & Filtration (Cols 1-3) -->
+      <div class="lg:col-span-4 bg-slate-800/60 border border-slate-700 rounded-xl p-4 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-700">
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-400">STAGE 1: GENERATION &amp; DRYING</span>
+            <span class="kks-badge text-[11px] bg-slate-900 text-slate-300 px-2 py-0.5 rounded border border-slate-700">20SCA / 20QFA</span>
+          </div>
+
+          <!-- Compressor Source Header -->
+          <div class="bg-slate-900/90 border border-slate-700 rounded-lg p-3 mb-4">
+            <div class="flex justify-between items-center text-xs mb-1">
+              <span class="font-bold text-white">Compressor Supply Header</span>
+              <span class="kks-badge text-sky-300 font-bold">20SCA20</span>
+            </div>
+            <div class="text-xs text-slate-400 mb-2">2" Supply line from air compressors</div>
+            <div class="flex items-center gap-2 text-[11px] bg-slate-800/80 p-1.5 rounded border border-slate-700/60 text-slate-300">
+              <span class="text-amber-400">🔻 Part:</span>
+              <span>Manual Drain Valve: <strong class="kks-badge text-amber-300">20SCA20AA403</strong> (1")</span>
+            </div>
+          </div>
+
+          <!-- Dual Train Dryers -->
+          <div class="space-y-3">
+            
+            <!-- Train 1 -->
+            <div class="p-3 bg-gradient-to-r from-blue-950/40 to-slate-900 border border-blue-800/40 rounded-lg">
+              <div class="flex justify-between items-center text-xs mb-1">
+                <span class="font-bold text-blue-300">Dryer Package #1</span>
+                <span class="kks-badge text-blue-400 font-bold">20QFA01</span>
+              </div>
+              <div class="text-[11px] text-slate-400 mb-2">Twin Adsorption Towers &amp; Dual Filters</div>
+              <div class="space-y-1 text-[11px]">
+                <div class="flex justify-between bg-slate-800/60 px-2 py-1 rounded">
+                  <span class="text-slate-300">Inlet Pre-Filter</span>
+                  <span class="kks-badge text-sky-300">20QFA01AT001</span>
+                </div>
+                <div class="flex justify-between bg-slate-800/60 px-2 py-1 rounded">
+                  <span class="text-slate-300">Inlet Pneumatic Valve</span>
+                  <span class="kks-badge text-sky-300">20QFA01AA091</span>
+                </div>
+                <div class="flex justify-between bg-slate-800/60 px-2 py-1 rounded">
+                  <span class="text-slate-300">Discharge After-Filter</span>
+                  <span class="kks-badge text-sky-300">20QFA01AT002</span>
+                </div>
+                <div class="flex justify-between bg-slate-800/60 px-2 py-1 rounded">
+                  <span class="text-slate-300">Outlet Pneumatic Valve</span>
+                  <span class="kks-badge text-sky-300">20QFA01AA092</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Train 2 -->
+            <div class="p-3 bg-gradient-to-r from-blue-950/40 to-slate-900 border border-blue-800/40 rounded-lg">
+              <div class="flex justify-between items-center text-xs mb-1">
+                <span class="font-bold text-blue-300">Dryer Package #2</span>
+                <span class="kks-badge text-blue-400 font-bold">20QFA02</span>
+              </div>
+              <div class="text-[11px] text-slate-400 mb-2">Redundant Twin Adsorption Towers</div>
+              <div class="space-y-1 text-[11px]">
+                <div class="flex justify-between bg-slate-800/60 px-2 py-1 rounded">
+                  <span class="text-slate-300">Inlet Pre-Filter</span>
+                  <span class="kks-badge text-sky-300">20QFA02AT001</span>
+                </div>
+                <div class="flex justify-between bg-slate-800/60 px-2 py-1 rounded">
+                  <span class="text-slate-300">Inlet Pneumatic Valve</span>
+                  <span class="kks-badge text-sky-300">20QFA02AA091</span>
+                </div>
+                <div class="flex justify-between bg-slate-800/60 px-2 py-1 rounded">
+                  <span class="text-slate-300">Discharge After-Filter</span>
+                  <span class="kks-badge text-sky-300">20QFA02AT002</span>
+                </div>
+                <div class="flex justify-between bg-slate-800/60 px-2 py-1 rounded">
+                  <span class="text-slate-300">Outlet Pneumatic Valve</span>
+                  <span class="kks-badge text-sky-300">20QFA02AA092</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-700/80 text-[11px] text-slate-400 flex items-center justify-between">
+          <span>Non-Return Check Valve:</span>
+          <span class="kks-badge text-amber-300 font-semibold">20QFA20AA101</span>
+        </div>
+      </div>
+
+      <!-- Stage 2: Storage Receiver Vessel (Cols 4-7) -->
+      <div class="lg:col-span-4 bg-slate-800/60 border border-slate-700 rounded-xl p-4 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-700">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-400">STAGE 2: AIR STORAGE &amp; REGULATION</span>
+            <span class="kks-badge text-[11px] bg-slate-900 text-slate-300 px-2 py-0.5 rounded border border-slate-700">20QFA20</span>
+          </div>
+
+          <!-- Vessel Schematic Display -->
+          <div class="relative bg-slate-900 border-2 border-amber-500/50 rounded-xl p-4 mb-4 text-center shadow-lg">
+            
+            <!-- Safety Valve Top Badge -->
+            <div class="inline-block bg-red-950/80 border border-red-500/60 px-3 py-1 rounded-full text-xs text-red-300 font-semibold mb-3">
+              🛡️ Top Safety Relief Valve: <span class="kks-badge text-red-200">20QFA20AA901</span> (10 barg)
+            </div>
+
+            <div class="my-2">
+              <div class="text-3xl mb-1">🛢️</div>
+              <h3 class="text-sm font-bold text-white uppercase tracking-wider">Instrument Air Receiver</h3>
+              <div class="kks-badge text-amber-400 text-sm font-bold mt-0.5">20QFA20BB001</div>
+              <div class="text-[11px] text-slate-400 mt-1">Vertical Pressure Vessel · Pset: 10 barg · 70 °C</div>
+            </div>
+
+            <!-- Instruments On Vessel Shell -->
+            <div class="grid grid-cols-2 gap-2 mt-4 text-left">
+              <div class="bg-slate-800/90 border border-slate-700 p-2 rounded">
+                <div class="text-[10px] text-slate-400">Pressure Xmtr 1 (PTCI)</div>
+                <div class="kks-badge text-xs text-sky-400 font-bold">20QFA20CP001</div>
+                <div class="text-[10px] text-slate-400 mt-1">Root Valve: <span class="kks-badge text-slate-300">AA701</span></div>
+              </div>
+              <div class="bg-slate-800/90 border border-slate-700 p-2 rounded">
+                <div class="text-[10px] text-slate-400">Pressure Xmtr 2 (PTCI)</div>
+                <div class="kks-badge text-xs text-sky-400 font-bold">20QFA20CP002</div>
+                <div class="text-[10px] text-slate-400 mt-1">Root Valve: <span class="kks-badge text-slate-300">AA702</span></div>
+              </div>
+              <div class="bg-slate-800/90 border border-slate-700 p-2 rounded col-span-2 flex justify-between items-center">
+                <div>
+                  <div class="text-[10px] text-slate-400">Local Pressure Gauge (PI)</div>
+                  <div class="kks-badge text-xs text-emerald-400 font-bold">20QFA20CP501</div>
+                </div>
+                <div class="text-[10px] text-slate-400">Root Valve: <span class="kks-badge text-slate-300 font-bold">AA703</span></div>
+              </div>
+            </div>
+
+            <!-- Bottom Drain Assembly -->
+            <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center text-[11px] bg-slate-950/60 p-2 rounded border border-slate-800">
+              <span class="text-slate-400">Auto Moisture Trap:</span>
+              <span class="kks-badge text-amber-300 font-bold">20QFA20AT401</span>
+            </div>
+            <div class="mt-1 flex justify-between text-[10px] text-slate-400 px-2">
+              <span>Primary Drain: <span class="kks-badge text-slate-300 font-bold">AA402</span></span>
+              <span>Bypass Drain: <span class="kks-badge text-slate-300 font-bold">AA403</span></span>
+            </div>
+          </div>
+
+          <!-- Main Outlet Header Connection -->
+          <div class="bg-slate-900/90 border border-slate-700 rounded-lg p-3">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-300">Receiver Main Outlet Valve (2-1/2")</span>
+              <span class="kks-badge text-emerald-400 font-bold">20QFB10AA001</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-2 text-[11px] text-slate-400 text-center">
+          Main 2-1/2" Header Line: <strong class="kks-badge text-slate-200">20QFB10 BR001</strong>
+        </div>
+      </div>
+
+      <!-- Stage 3: Distribution Network (Cols 8-12) -->
+      <div class="lg:col-span-4 bg-slate-800/60 border border-slate-700 rounded-xl p-4 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-700">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">STAGE 3: 10 DISTRIBUTION MANIFOLDS</span>
+            <span class="kks-badge text-[11px] bg-slate-900 text-slate-300 px-2 py-0.5 rounded border border-slate-700">20QFB</span>
+          </div>
+
+          <!-- Header Instrumentation -->
+          <div class="bg-slate-900/80 border border-slate-700 p-2.5 rounded-lg mb-3 flex justify-between items-center text-xs">
+            <div>
+              <div class="text-slate-400 text-[11px]">Header Pressure Transmitter (PTIA)</div>
+              <div class="kks-badge text-sky-400 font-bold">20QFB01CP001</div>
+            </div>
+            <div class="text-right">
+              <div class="text-slate-400 text-[11px]">Root Valve</div>
+              <div class="kks-badge text-slate-300">20QFB10AA701</div>
+            </div>
+          </div>
+
+          <!-- Scrollable Manifold Grid List -->
+          <div class="space-y-2 max-h-[380px] overflow-y-auto pr-1">
+            
+            <div class="p-2.5 bg-slate-900/90 border border-slate-700 rounded-lg">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-bold text-white">Manifold #1 (Turbine Steam)</span>
+                <span class="kks-badge text-emerald-400 font-bold">20QFB11BB001</span>
+              </div>
+              <div class="text-[11px] text-slate-400 mt-1">Inlet: <code class="text-slate-300">AA001</code> · Drain: <code class="text-slate-300">AA401</code></div>
+              <div class="text-[11px] text-slate-400">Consumers: ST Extraction (20LAB30), Feedwater (20LBA/LBB)</div>
+            </div>
+
+            <div class="p-2.5 bg-slate-900/90 border border-slate-700 rounded-lg">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-bold text-white">Manifold #2 (Heaters &amp; Drains)</span>
+                <span class="kks-badge text-emerald-400 font-bold">20QFB21BB001</span>
+              </div>
+              <div class="text-[11px] text-slate-400 mt-1">Inlet: <code class="text-slate-300">AA001</code> · Drain: <code class="text-slate-300">AA401</code></div>
+              <div class="text-[11px] text-slate-400">Consumers: HP Heaters (20LAC40), Casing Warm-up (20HAC40)</div>
+            </div>
+
+            <div class="p-2.5 bg-slate-900/90 border border-slate-700 rounded-lg">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-bold text-white">Manifold #3 &amp; #4 (Fuel Gas &amp; Burners)</span>
+                <span class="kks-badge text-emerald-400 font-bold">20QFB31 / 32</span>
+              </div>
+              <div class="text-[11px] text-slate-400 mt-1">Purge Valves (20EKT01/02), Burner Control (20EKT20), H2 Cooling</div>
+            </div>
+
+            <div class="p-2.5 bg-slate-900/90 border border-slate-700 rounded-lg">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-bold text-white">Manifold #6 &amp; #7 (Bypass &amp; Deaerator)</span>
+                <span class="kks-badge text-emerald-400 font-bold">20QFB41 / 42</span>
+              </div>
+              <div class="text-[11px] text-slate-400 mt-1">HP/LP Bypass Spray (20MAL25/65), Gland Steam (20MAW10)</div>
+            </div>
+
+            <div class="p-2.5 bg-slate-900/90 border border-slate-700 rounded-lg">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-bold text-white">Manifold #8 &amp; #9 (Emergency Trip &amp; Lube)</span>
+                <span class="kks-badge text-emerald-400 font-bold">20QFB51 / 52</span>
+              </div>
+              <div class="text-[11px] text-slate-400 mt-1">Turbine Trip (10MAG10/10MAJ60), Lube &amp; Jacking Oil (20MAL)</div>
+            </div>
+
+            <div class="p-2.5 bg-slate-900/90 border border-slate-700 rounded-lg">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-bold text-white">External Skids (Gas / CEMS / Fire)</span>
+                <span class="kks-badge text-amber-300 font-bold">20QFB13 / 15 / 16 / 24</span>
+              </div>
+              <div class="text-[11px] text-slate-400 mt-1">Gas Station (20EKA10), CEMS, ETP, Chemical Dosing, Fire Water</div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="mt-4 pt-2 border-t border-slate-700 text-[11px] text-slate-400 flex justify-between">
+          <span>Total Connected Field Consumers:</span>
+          <span class="font-bold text-white">72+ Actuators &amp; Skids</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ======================================================================================= -->
+  <!-- TAB 2: INTERACTIVE EQUIPMENT & PART KKS EXPLORER                                        -->
+  <!-- ======================================================================================= -->
+  <div id="view-mapping" class="hidden space-y-6">
+    <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-5">
+      <div class="mb-4">
+        <h2 class="text-lg font-bold text-white">Select Parent Equipment to Inspect Sub-Assembly / Part KKS</h2>
+        <p class="text-xs text-slate-400">Click any major equipment unit below to see its internal components, actuators, root valves, and KKS breakdown.</p>
+      </div>
+
+      <!-- Equipment Selector Pills -->
+      <div class="flex flex-wrap gap-2 mb-6" id="equip-selector-bar">
+        <button onclick="inspectEquip('dryer1')" id="btn-dryer1" class="equip-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white">
+          Dryer #1 Package (20QFA01)
+        </button>
+        <button onclick="inspectEquip('dryer2')" id="btn-dryer2" class="equip-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+          Dryer #2 Package (20QFA02)
+        </button>
+        <button onclick="inspectEquip('receiver')" id="btn-receiver" class="equip-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+          Air Storage Receiver (20QFA20BB001)
+        </button>
+        <button onclick="inspectEquip('header')" id="btn-header" class="equip-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+          Main Distribution Header (20QFB10)
+        </button>
+        <button onclick="inspectEquip('m1')" id="btn-m1" class="equip-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+          Distribution Manifold #1 (20QFB11)
+        </button>
+        <button onclick="inspectEquip('m6')" id="btn-m6" class="equip-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+          ST Bypass Manifold #6 (20QFB41)
+        </button>
+        <button onclick="inspectEquip('m8')" id="btn-m8" class="equip-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+          Emergency Trip Manifold #8 (20QFB51)
+        </button>
+      </div>
+
+      <!-- Equipment Details & Parts Display Card -->
+      <div id="equip-detail-panel" class="bg-slate-900 border border-slate-700 rounded-xl p-5">
+        <!-- Rendered dynamically by script -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================================= -->
+  <!-- TAB 3: FULL COMPONENT MATRIX (SEARCHABLE TABLE)                                         -->
+  <!-- ======================================================================================= -->
+  <div id="view-matrix" class="hidden space-y-4">
+    <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+        <div>
+          <h2 class="text-base font-bold text-white">Instrument Air System Master Mapping Matrix</h2>
+          <p class="text-xs text-slate-400">Extracted from P&amp;ID Drawing 07485-20-QF_-MDD-TRE-113 (Sheets 01 to 04)</p>
+        </div>
+        <input type="text" id="matrix-search" oninput="filterMatrix()" placeholder="Search by KKS, Equipment, or Part..." class="w-full sm:w-72 bg-slate-900 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 outline-none focus:border-blue-500">
+      </div>
+
+      <div class="overflow-x-auto max-h-[550px]">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-900/90 text-slate-400 sticky top-0 border-b border-slate-700">
+            <tr>
+              <th class="p-2.5">Plant / Area</th>
+              <th class="p-2.5">Parent Equipment</th>
+              <th class="p-2.5">Equipment KKS</th>
+              <th class="p-2.5">Sub-Assembly / Part Name</th>
+              <th class="p-2.5">Part KKS No.</th>
+              <th class="p-2.5">Category</th>
+              <th class="p-2.5">P&amp;ID Sheet</th>
+            </tr>
+          </thead>
+          <tbody id="matrix-tbody" class="divide-y divide-slate-800 text-slate-200">
+            <!-- Rendered by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================================= -->
+  <!-- TAB 4: TWO-WAY SYNC SIMULATION                                                          -->
+  <!-- ======================================================================================= -->
+  <div id="view-twoway" class="hidden space-y-6">
+    <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-5">
+      <div class="mb-4">
+        <h2 class="text-lg font-bold text-white">Two-Way Dynamic Learning &amp; Registration Simulator</h2>
+        <p class="text-xs text-slate-400">Experience how the Daily Work Entry form auto-populates known KKS codes from the Master Catalog, and automatically registers new parts back to Document Center.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Interactive Form Mockup -->
+        <div class="bg-slate-900 border border-slate-700 rounded-xl p-5 shadow-lg">
+          <div class="text-xs font-bold text-sky-400 uppercase tracking-wider mb-3">Daily Maintenance Log Entry</div>
+          
+          <div class="space-y-4 text-xs">
+            <div>
+              <label class="block text-slate-400 mb-1">Plant / Area</label>
+              <select id="sim-area" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-white">
+                <option>Instrument Air System</option>
+                <option>Steam Turbine (ST)</option>
+                <option>Boiler Feedwater (BFP)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-slate-400 mb-1">Equipment Name</label>
+              <select id="sim-equip" onchange="onSimEquipChange()" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-white">
+                <option value="dryer1">Instrument Air Dryer #1 Package</option>
+                <option value="dryer2">Instrument Air Dryer #2 Package</option>
+                <option value="receiver">Instrument Air Receiver Vessel</option>
+                <option value="m1">Air Distribution Manifold #1</option>
+                <option value="custom">+ Type Custom / New Equipment...</option>
+              </select>
+            </div>
+
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <label class="text-slate-400">Equipment KKS No.</label>
+                <span class="text-[10px] text-emerald-400">⚡ Auto-filled</span>
+              </div>
+              <input type="text" id="sim-equip-kks" value="20QFA01" class="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1.5 text-sky-300 font-mono">
+            </div>
+
+            <div>
+              <label class="block text-slate-400 mb-1">Specific Part / Component (Sub-assembly)</label>
+              <input type="text" id="sim-part" value="Inlet Pre-Filter Unit" oninput="onSimPartInput()" placeholder="Type part name (e.g. Desiccant Tower Valve Seal)..." class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-white">
+            </div>
+
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <label class="text-slate-400">Part KKS No.</label>
+                <span id="sim-part-status" class="text-[10px] text-sky-400">Found in Catalog</span>
+              </div>
+              <input type="text" id="sim-part-kks" value="20QFA01AT001" class="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1.5 text-amber-300 font-mono">
+            </div>
+
+            <button type="button" onclick="simSaveEntry()" class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded shadow transition flex items-center justify-center gap-2">
+              <span>⚡</span> Save Maintenance Entry (Test 2-Way Sync)
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Sync Event Log Output -->
+        <div class="bg-slate-900 border border-slate-700 rounded-xl p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Live Two-Way Action Console</span>
+              <span class="text-[10px] text-slate-400">Real-Time Event Stream</span>
+            </div>
+            <div id="sim-console" class="space-y-2 text-xs font-mono max-h-[300px] overflow-y-auto bg-slate-950 p-3 rounded border border-slate-800 text-slate-300">
+              <div class="text-slate-500">// System ready. Modify the form and click Save Entry.</div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-400">
+            <strong>Key Benefit:</strong> If an engineer discovers a replacement valve or new instrument in the field and enters a new Part KKS, it saves the daily log AND simultaneously updates the Document Center catalog for all engineers.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Logic -->
+  <script>
+    // System Data Model
+    const COMPONENT_DATA = [
+      { area: "Instrument Air", equip: "Compressor Supply Header", equipKks: "20SCA20", part: "Manual Drain Valve", partKks: "20SCA20AA403", category: "Drain Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Dryer #1", equipKks: "20QFA01", part: "Inlet Pre-Filter Unit", partKks: "20QFA01AT001", category: "Filter", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Dryer #1", equipKks: "20QFA01", part: "Inlet Isolation/Control Valve", partKks: "20QFA01AA091", category: "Pneumatic Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Dryer #1", equipKks: "20QFA01", part: "Inlet Manual Drain Valve", partKks: "20QFA01AA401", category: "Drain Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Dryer #1", equipKks: "20QFA01", part: "Desiccant Adsorption Tower #1", partKks: "20QFA01BB001", category: "Adsorber Tower", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Dryer #1", equipKks: "20QFA01", part: "Discharge After-Filter", partKks: "20QFA01AT002", category: "Filter", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Dryer #1", equipKks: "20QFA01", part: "Outlet Isolation/Control Valve", partKks: "20QFA01AA092", category: "Pneumatic Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Dryer #1", equipKks: "20QFA01", part: "Inlet Test Point", partKks: "TP-QFA1-1", category: "Test Point", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Dryer #1", equipKks: "20QFA01", part: "Mid-Stage Dew Point Test Point", partKks: "TP-QFA1-2", category: "Test Point", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Dryer #1", equipKks: "20QFA01", part: "Outlet Air Test Point", partKks: "TP-QFA1-3", category: "Test Point", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Dryer #2", equipKks: "20QFA02", part: "Inlet Pre-Filter Unit", partKks: "20QFA02AT001", category: "Filter", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Dryer #2", equipKks: "20QFA02", part: "Inlet Isolation/Control Valve", partKks: "20QFA02AA091", category: "Pneumatic Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Dryer #2", equipKks: "20QFA02", part: "Inlet Manual Drain Valve", partKks: "20QFA02AA401", category: "Drain Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Dryer #2", equipKks: "20QFA02", part: "Desiccant Adsorption Tower #2", partKks: "20QFA02BB001", category: "Adsorber Tower", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Dryer #2", equipKks: "20QFA02", part: "Discharge After-Filter", partKks: "20QFA02AT002", category: "Filter", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Dryer #2", equipKks: "20QFA02", part: "Outlet Isolation/Control Valve", partKks: "20QFA02AA092", category: "Pneumatic Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Dryer Common Discharge", equipKks: "20QFA20", part: "Header Check Valve (Non-Return)", partKks: "20QFA20AA101", category: "Check Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Dryer Common Discharge", equipKks: "20QFA20", part: "Receiver Inlet Isolation Valve", partKks: "20QFA20AA001", category: "Isolation Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Dryer Common Discharge", equipKks: "20QFA20", part: "Header Drain Valve", partKks: "20QFA20AA401", category: "Drain Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Receiver", equipKks: "20QFA20BB001", part: "Receiver Vessel Shell & Internals", partKks: "20QFA20BB001", category: "Pressure Vessel", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Receiver", equipKks: "20QFA20BB001", part: "Safety Relief Valve (10 barg)", partKks: "20QFA20AA901", category: "Safety Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Receiver", equipKks: "20QFA20BB001", part: "Pressure Transmitter 1 (PTCI)", partKks: "20QFA20CP001", category: "Transmitter", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Receiver", equipKks: "20QFA20BB001", part: "PT-001 Root Isolation Valve", partKks: "20QFA20AA701", category: "Needle Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Receiver", equipKks: "20QFA20BB001", part: "Pressure Transmitter 2 (PTCI)", partKks: "20QFA20CP002", category: "Transmitter", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Receiver", equipKks: "20QFA20BB001", part: "PT-002 Root Isolation Valve", partKks: "20QFA20AA702", category: "Needle Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Receiver", equipKks: "20QFA20BB001", part: "Local Pressure Gauge (PI)", partKks: "20QFA20CP501", category: "Gauge", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Receiver", equipKks: "20QFA20BB001", part: "PI-501 Root Isolation Valve", partKks: "20QFA20AA703", category: "Needle Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Receiver", equipKks: "20QFA20BB001", part: "Primary Bottom Drain Valve", partKks: "20QFA20AA402", category: "Drain Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Receiver", equipKks: "20QFA20BB001", part: "Automatic Moisture Drain Trap", partKks: "20QFA20AT401", category: "Condensate Trap", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Instrument Air Receiver", equipKks: "20QFA20BB001", part: "Secondary/Bypass Drain Valve", partKks: "20QFA20AA403", category: "Drain Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Receiver Main Header", equipKks: "20QFB10", part: "Receiver Main Outlet Valve (2-1/2\")", partKks: "20QFB10AA001", category: "Isolation Valve", sheet: "Sheet 02" },
+      { area: "Instrument Air", equip: "Receiver Main Header", equipKks: "20QFB10", part: "Header Low-Point Drain", partKks: "20QFB10AA401", category: "Drain Valve", sheet: "Sheet 03" },
+      { area: "Instrument Air", equip: "Receiver Main Header", equipKks: "20QFB10", part: "Distribution Pressure Transmitter", partKks: "20QFB01CP001", category: "Transmitter", sheet: "Sheet 04" },
+      { area: "Instrument Air", equip: "Air Distributor #1", equipKks: "20QFB11BB001", part: "Distributor Inlet Valve (1-1/2\")", partKks: "20QFB11AA001", category: "Isolation Valve", sheet: "Sheet 03" },
+      { area: "Instrument Air", equip: "Air Distributor #1", equipKks: "20QFB11BB001", part: "Distributor Bottom Drain Valve", partKks: "20QFB11AA401", category: "Drain Valve", sheet: "Sheet 03" },
+      { area: "Instrument Air", equip: "Air Distributor #1", equipKks: "20QFB11BB001", part: "Turbine Extraction Consumer Valve", partKks: "20LAB30AA081", category: "Consumer Valve", sheet: "Sheet 03" },
+      { area: "Instrument Air", equip: "Air Distributor #2", equipKks: "20QFB21BB001", part: "Distributor Inlet Valve", partKks: "20QFB21AA001", category: "Isolation Valve", sheet: "Sheet 03" },
+      { area: "Instrument Air", equip: "Air Distributor #2", equipKks: "20QFB21BB001", part: "Distributor Bottom Drain Valve", partKks: "20QFB21AA401", category: "Drain Valve", sheet: "Sheet 03" },
+      { area: "Instrument Air", equip: "Air Distributor #2", equipKks: "20QFB21BB001", part: "HP Heater 1 Extraction Valve", partKks: "20LAC40AA081", category: "Consumer Valve", sheet: "Sheet 03" },
+      { area: "Instrument Air", equip: "Air Distributor #6", equipKks: "20QFB41BB001", part: "ST HP Bypass Spray Water Valve", partKks: "20MAL25AA051", category: "Consumer Valve", sheet: "Sheet 04" },
+      { area: "Instrument Air", equip: "Air Distributor #6", equipKks: "20QFB41BB001", part: "ST LP Bypass Spray Water Valve", partKks: "20MAL65AA051", category: "Consumer Valve", sheet: "Sheet 04" },
+      { area: "Instrument Air", equip: "Air Distributor #7", equipKks: "20QFB42BB001", part: "Gland Steam Supply Regulator", partKks: "20MAW10AA151", category: "Consumer Valve", sheet: "Sheet 04" },
+      { area: "Instrument Air", equip: "Air Distributor #8", equipKks: "20QFB51BB001", part: "Main Steam Stop Valve Actuator", partKks: "10MAG10AA051", category: "Trip Actuator", sheet: "Sheet 04" },
+      { area: "Instrument Air", equip: "Air Distributor #8", equipKks: "20QFB51BB001", part: "Steam Turbine Emergency Trip", partKks: "10MAJ60AA051", category: "Trip Actuator", sheet: "Sheet 04" }
+    ];
+
+    // Tab Switcher
+    function setTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('border-blue-500', 'text-blue-400');
+        b.classList.add('border-transparent', 'text-slate-400');
+      });
+      document.getElementById('tab-' + tabId).classList.add('border-blue-500', 'text-blue-400');
+      document.getElementById('tab-' + tabId).classList.remove('border-transparent', 'text-slate-400');
+
+      ['schematic', 'mapping', 'matrix', 'twoway'].forEach(id => {
+        document.getElementById('view-' + id).classList.add('hidden');
+      });
+      document.getElementById('view-' + tabId).classList.remove('hidden');
+
+      if (tabId === 'mapping') inspectEquip('dryer1');
+      if (tabId === 'matrix') renderMatrix(COMPONENT_DATA);
+    }
+
+    // Equipment Details Explorer
+    const EQUIP_PRESETS = {
+      dryer1: {
+        name: "Instrument Air Dryer #1 Package",
+        kks: "20QFA01",
+        p&id: "Sheet 02 (07485-20-QF_-MDD-TRE-113)",
+        desc: "Twin-tower adsorption desiccant air drying package with automated changeover cycles, oil coalescing pre-filter, and particulate after-filter.",
+        parts: [
+          { name: "Inlet Pre-Filter Unit", kks: "20QFA01AT001", role: "Particulate & bulk liquid/oil removal", cat: "Filter" },
+          { name: "Inlet Automatic Control/Isolation Valve", kks: "20QFA01AA091", role: "2\"x1-1/2\" Automated tower inlet valve", cat: "Pneumatic Valve" },
+          { name: "Inlet Manual Drain Valve", kks: "20QFA01AA401", role: "1/2\" Manual condensate blowdown", cat: "Drain Valve" },
+          { name: "Twin Desiccant Adsorption Tower #1", kks: "20QFA01BB001", role: "Activated alumina / molecular sieve vessel", cat: "Adsorber Tower" },
+          { name: "Discharge After-Filter Unit", kks: "20QFA01AT002", role: "0.01 micron desiccant dust removal", cat: "Filter" },
+          { name: "Outlet Automatic Control/Isolation Valve", kks: "20QFA01AA092", role: "2\"x1-1/2\" Automated package discharge", cat: "Pneumatic Valve" },
+          { name: "Test Points (Inlet / Mid / Outlet)", kks: "TP-QFA1-1 / 2 / 3", role: "Dew point measurement & sampling ports", cat: "Test Point" }
+        ]
+      },
+      dryer2: {
+        name: "Instrument Air Dryer #2 Package",
+        kks: "20QFA02",
+        p&id: "Sheet 02 (07485-20-QF_-MDD-TRE-113)",
+        desc: "100% redundant twin-tower adsorption desiccant dryer package matching Dryer #1 specification.",
+        parts: [
+          { name: "Inlet Pre-Filter Unit", kks: "20QFA02AT001", role: "Particulate & oil removal pre-filter", cat: "Filter" },
+          { name: "Inlet Automatic Control/Isolation Valve", kks: "20QFA02AA091", role: "2\"x1-1/2\" Automated tower inlet valve", cat: "Pneumatic Valve" },
+          { name: "Inlet Manual Drain Valve", kks: "20QFA02AA401", role: "1/2\" Manual condensate blowdown", cat: "Drain Valve" },
+          { name: "Twin Desiccant Adsorption Tower #2", kks: "20QFA02BB001", role: "Activated alumina drying vessel", cat: "Adsorber Tower" },
+          { name: "Discharge After-Filter Unit", kks: "20QFA02AT002", role: "Desiccant dust filter", cat: "Filter" },
+          { name: "Outlet Automatic Control/Isolation Valve", kks: "20QFA02AA092", role: "2\"x1-1/2\" Automated discharge valve", cat: "Pneumatic Valve" },
+          { name: "Test Points (Inlet / Mid / Outlet)", kks: "TP-QFA2-1 / 2 / 3", role: "Sampling ports for dew point", cat: "Test Point" }
+        ]
+      },
+      receiver: {
+        name: "Instrument Air Storage Receiver",
+        kks: "20QFA20BB001",
+        p&id: "Sheet 02 (07485-20-QF_-MDD-TRE-113)",
+        desc: "Vertical cylindrical steel pressure storage vessel damping pressure fluctuations and providing emergency reserve buffer.",
+        parts: [
+          { name: "Receiver Main Pressure Shell", kks: "20QFA20BB001", role: "Vertical pressure vessel body (10.0 barg, 70°C)", cat: "Pressure Vessel" },
+          { name: "Top Safety Relief Valve", kks: "20QFA20AA901", role: "Overpressure protection set at PSET = 10.0 barg", cat: "Safety Valve" },
+          { name: "Receiver Pressure Transmitter 1 (PTCI)", kks: "20QFA20CP001", role: "Electronic 4-20mA pressure feedback channel 1", cat: "Transmitter" },
+          { name: "PT-001 Root Isolation Valve", kks: "20QFA20AA701", role: "3/4\" Instrument isolation needle valve", cat: "Needle Valve" },
+          { name: "Receiver Pressure Transmitter 2 (PTCI)", kks: "20QFA20CP002", role: "Electronic redundant pressure feedback channel 2", cat: "Transmitter" },
+          { name: "PT-002 Root Isolation Valve", kks: "20QFA20AA702", role: "3/4\" Instrument isolation needle valve", cat: "Needle Valve" },
+          { name: "Local Bourdon Pressure Indicator (PI)", kks: "20QFA20CP501", role: "Direct visual analog pressure gauge on vessel", cat: "Pressure Gauge" },
+          { name: "PI-501 Root Isolation Valve", kks: "20QFA20AA703", role: "3/4\" Gauge isolation root valve", cat: "Needle Valve" },
+          { name: "Automatic Moisture Drain Trap", kks: "20QFA20AT401", role: "Bottom automatic condensate separator/discharge", cat: "Condensate Trap" },
+          { name: "Bottom Drain Primary Valve", kks: "20QFA20AA402", role: "1\" Vessel bottom drain line isolation", cat: "Drain Valve" },
+          { name: "Bottom Drain Secondary / Bypass Valve", kks: "20QFA20AA403", role: "1\" Trap bypass manual drain valve", cat: "Drain Valve" }
+        ]
+      },
+      header: {
+        name: "Main Distribution Header",
+        kks: "20QFB10",
+        p&id: "Sheets 02, 03 & 04",
+        desc: "2-1/2\" Main distribution backbone carrying dry air from receiver outlet to 10 local distribution manifolds.",
+        parts: [
+          { name: "Receiver Main Outlet Valve", kks: "20QFB10AA001", role: "2-1/2\" Main supply isolation gate/ball valve", cat: "Isolation Valve" },
+          { name: "Header Low-Point Manual Drain", kks: "20QFB10AA401", role: "1\" Manual header low point drain", cat: "Drain Valve" },
+          { name: "Distribution Header Pressure Xmtr (PTIA)", kks: "20QFB01CP001", role: "Header pressure monitoring transmitter", cat: "Transmitter" },
+          { name: "PT-01 Root Needle Valve", kks: "20QFB10AA701", role: "3/4\" Instrument root isolation valve", cat: "Needle Valve" }
+        ]
+      },
+      m1: {
+        name: "Air Distribution Manifold #1",
+        kks: "20QFB11BB001",
+        p&id: "Sheet 03 (07485-20-QF_-MDD-TRE-113)",
+        desc: "Vertical distribution collector column supplying instrument air to Turbine Extraction, Condensate Polishing, and Feedwater valves.",
+        parts: [
+          { name: "Distributor Inlet Isolation Valve", kks: "20QFB11AA001", role: "1-1/2\" Branch supply inlet isolation valve", cat: "Isolation Valve" },
+          { name: "Distributor Bottom Drain Valve", kks: "20QFB11AA401", role: "1\" Column bottom manual drain valve", cat: "Drain Valve" },
+          { name: "Turbine Extraction Steam Valve", kks: "20LAB30AA081", role: "Air feed to ST extraction isolation valve", cat: "Consumer Actuator" },
+          { name: "Turbine Extraction Check Valve", kks: "20LAB30AA181", role: "Air feed to ST extraction non-return valve", cat: "Consumer Actuator" },
+          { name: "Condensate Polisher Inlet Valve", kks: "20LAE10AA081", role: "Air feed to condensate polisher block valve", cat: "Consumer Actuator" },
+          { name: "Boiler Feed Pump Discharge Valve", kks: "20LBA30AA081", role: "Air feed to BFP feed regulating control valve", cat: "Consumer Actuator" }
+        ]
+      },
+      m6: {
+        name: "Steam Turbine Bypass Manifold #6",
+        kks: "20QFB41BB001",
+        p&id: "Sheet 04 (07485-20-QF_-MDD-TRE-113)",
+        desc: "High-priority distribution column supplying air to Steam Turbine HP/LP Bypass desuperheating spray water control valves.",
+        parts: [
+          { name: "Distributor Inlet Isolation Valve", kks: "20QFB41AA001", role: "1\" Branch inlet isolation valve", cat: "Isolation Valve" },
+          { name: "Distributor Bottom Drain Valve", kks: "20QFB41AA401", role: "1\" Column bottom drain valve", cat: "Drain Valve" },
+          { name: "HP Bypass Spray Water Valve", kks: "20MAL25AA051", role: "Air actuator for HP bypass spray water (TP-T960)", cat: "Consumer Actuator" },
+          { name: "LP Bypass Spray Water Valve", kks: "20MAL65AA051", role: "Air actuator for LP bypass spray water (TP-T960)", cat: "Consumer Actuator" },
+          { name: "LP Flash Tank Drain Control Valve", kks: "20LBC44AA081", role: "Pneumatic level drain control for LP flash tank", cat: "Consumer Actuator" },
+          { name: "Generator Seal Oil DP Regulator", kks: "20GHC25AA082", role: "Air supply to H2 seal oil differential regulator", cat: "Consumer Actuator" }
+        ]
+      },
+      m8: {
+        name: "Emergency Trip & Purifier Manifold #8",
+        kks: "20QFB51BB001",
+        p&id: "Sheet 04 (07485-20-QF_-MDD-TRE-113)",
+        desc: "Safety-critical manifold feeding emergency stop valves, fuel gas trip valves, and lube oil conditioning systems.",
+        parts: [
+          { name: "Distributor Inlet Isolation Valve", kks: "20QFB51AA001", role: "1\" Branch inlet isolation valve", cat: "Isolation Valve" },
+          { name: "Distributor Bottom Drain Valve", kks: "20QFB51AA401", role: "1\" Column bottom drain valve", cat: "Drain Valve" },
+          { name: "GT Fuel Gas Trip Valve Actuator", kks: "10MAG10AA051", role: "Emergency fuel gas fast-acting shutoff valve", cat: "Trip Actuator" },
+          { name: "ST Emergency Stop Valve Actuator", kks: "10MAJ60AA051", role: "Steam Turbine main stop valve trip test cylinder", cat: "Trip Actuator" },
+          { name: "Lube Oil Purifier Feed Valve", kks: "20MAL10AA082", role: "Lube oil centrifugal purifier transfer valve", cat: "Consumer Actuator" },
+          { name: "Lube Oil Temperature Bypass Valve", kks: "20MAL20AA081", role: "Thermostatic cooler bypass regulator (TP-T910)", cat: "Consumer Actuator" }
+        ]
+      }
+    };
+
+    function inspectEquip(key) {
+      document.querySelectorAll('.equip-btn').forEach(b => {
+        b.classList.remove('bg-blue-600', 'text-white');
+        b.classList.add('bg-slate-800', 'text-slate-300');
+      });
+      document.getElementById('btn-' + key).classList.add('bg-blue-600', 'text-white');
+      document.getElementById('btn-' + key).classList.remove('bg-slate-800', 'text-slate-300');
+
+      const data = EQUIP_PRESETS[key];
+      const panel = document.getElementById('equip-detail-panel');
+
+      panel.innerHTML = `
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 mb-4 border-b border-slate-800 gap-2">
+          <div>
+            <div class="text-xs text-sky-400 font-semibold mb-1">Parent Equipment Unit</div>
+            <h3 class="text-lg font-bold text-white">${data.name}</h3>
+            <p class="text-xs text-slate-400 mt-0.5">${data.desc}</p>
+          </div>
+          <div class="text-right">
+            <div class="text-[11px] text-slate-400">Equipment KKS</div>
+            <div class="kks-badge text-amber-400 font-bold text-base">${data.kks}</div>
+            <div class="text-[10px] text-slate-400 mt-1">${data.p&id}</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-xs font-bold text-slate-300 mb-3 uppercase tracking-wider flex justify-between">
+            <span>Sub-Assemblies, Components &amp; Actuators (${data.parts.length} registered parts)</span>
+            <span class="text-blue-400 lowercase font-normal">feeds Part KKS in daily log</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            ${data.parts.map(p => `
+              <div class="p-3 bg-slate-800/80 border border-slate-700/80 rounded-lg flex justify-between items-start">
+                <div>
+                  <div class="font-semibold text-white text-xs">${p.name}</div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">${p.role}</div>
+                  <span class="inline-block mt-2 px-2 py-0.5 bg-slate-900 text-slate-400 border border-slate-700 rounded text-[10px] font-medium">${p.cat}</span>
+                </div>
+                <div class="text-right">
+                  <span class="kks-badge text-xs font-bold text-sky-400 bg-sky-950/60 px-2 py-1 rounded border border-sky-800/60">${p.kks}</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // Matrix Rendering
+    function renderMatrix(items) {
+      const tbody = document.getElementById('matrix-tbody');
+      tbody.innerHTML = items.map(r => `
+        <tr class="hover:bg-slate-800/60 transition">
+          <td class="p-2.5 text-slate-300">${r.area}</td>
+          <td class="p-2.5 font-semibold text-white">${r.equip}</td>
+          <td class="p-2.5"><span class="kks-badge text-amber-400 font-bold bg-amber-950/30 px-1.5 py-0.5 rounded border border-amber-900/40">${r.equipKks}</span></td>
+          <td class="p-2.5 text-slate-200">${r.part}</td>
+          <td class="p-2.5"><span class="kks-badge text-sky-300 font-bold bg-sky-950/40 px-1.5 py-0.5 rounded border border-sky-900/40">${r.partKks}</span></td>
+          <td class="p-2.5 text-slate-400">${r.category}</td>
+          <td class="p-2.5 text-slate-400">${r.sheet}</td>
+        </tr>
+      `).join('');
+    }
+
+    function filterMatrix() {
+      const q = document.getElementById('matrix-search').value.toLowerCase();
+      const filtered = COMPONENT_DATA.filter(i => 
+        i.equip.toLowerCase().includes(q) ||
+        i.equipKks.toLowerCase().includes(q) ||
+        i.part.toLowerCase().includes(q) ||
+        i.partKks.toLowerCase().includes(q) ||
+        i.category.toLowerCase().includes(q)
+      );
+      renderMatrix(filtered);
+    }
+
+    // Simulator Logic
+    function onSimEquipChange() {
+      const sel = document.getElementById('sim-equip').value;
+      const kksInput = document.getElementById('sim-equip-kks');
+      const partInput = document.getElementById('sim-part');
+      const partKksInput = document.getElementById('sim-part-kks');
+      const status = document.getElementById('sim-part-status');
+
+      if (sel === 'dryer1') {
+        kksInput.value = '20QFA01';
+        partInput.value = 'Inlet Pre-Filter Unit';
+        partKksInput.value = '20QFA01AT001';
+        status.textContent = 'Found in Catalog';
+        status.className = 'text-[10px] text-sky-400';
+      } else if (sel === 'dryer2') {
+        kksInput.value = '20QFA02';
+        partInput.value = 'Twin Adsorption Desiccant Tower';
+        partKksInput.value = '20QFA02BB001';
+        status.textContent = 'Found in Catalog';
+        status.className = 'text-[10px] text-sky-400';
+      } else if (sel === 'receiver') {
+        kksInput.value = '20QFA20BB001';
+        partInput.value = 'Top Safety Relief Valve (10 barg)';
+        partKksInput.value = '20QFA20AA901';
+        status.textContent = 'Found in Catalog';
+        status.className = 'text-[10px] text-sky-400';
+      } else if (sel === 'm1') {
+        kksInput.value = '20QFB11BB001';
+        partInput.value = 'Distributor Bottom Drain Valve';
+        partKksInput.value = '20QFB11AA401';
+        status.textContent = 'Found in Catalog';
+        status.className = 'text-[10px] text-sky-400';
+      } else {
+        kksInput.value = '';
+        partInput.value = '';
+        partKksInput.value = '';
+        status.textContent = 'New Entry Mode';
+        status.className = 'text-[10px] text-amber-400';
+      }
+    }
+
+    function onSimPartInput() {
+      const partVal = document.getElementById('sim-part').value.trim();
+      const status = document.getElementById('sim-part-status');
+      const match = COMPONENT_DATA.find(c => c.part.toLowerCase() === partVal.toLowerCase());
+      
+      if (match) {
+        document.getElementById('sim-part-kks').value = match.partKks;
+        status.textContent = 'Matched from Catalog';
+        status.className = 'text-[10px] text-emerald-400 font-bold';
+      } else {
+        status.textContent = '⚡ NEW Part Detected (Will Auto-Register)';
+        status.className = 'text-[10px] text-amber-400 font-bold';
+      }
+    }
+
+    function simSaveEntry() {
+      const c = document.getElementById('sim-console');
+      const equip = document.getElementById('sim-equip').options[document.getElementById('sim-equip').selectedIndex].text;
+      const equipKks = document.getElementById('sim-equip-kks').value;
+      const part = document.getElementById('sim-part').value;
+      const partKks = document.getElementById('sim-part-kks').value;
+      const time = new Date().toLocaleTimeString();
+
+      const exists = COMPONENT_DATA.some(i => i.partKks.toLowerCase() === partKks.toLowerCase());
+
+      let logHtml = `
+        <div class="pt-2 border-t border-slate-800">
+          <span class="text-blue-400">[${time}]</span> <span class="text-white">SAVE EVENT INITIATED</span><br/>
+          &nbsp;├─ Equipment: <strong class="text-sky-300">${equip}</strong> (${equipKks})<br/>
+          &nbsp;├─ Part: <strong class="text-amber-300">${part}</strong> (${partKks})<br/>
+          &nbsp;├─ Action 1: Written to <span class="text-emerald-400">maintenance_records</span> (0ms Optimistic UI)<br/>
+      `;
+
+      if (!exists && partKks) {
+        logHtml += `
+          &nbsp;└─ <span class="text-amber-400 font-bold">⚡ TWO-WAY SYNC TRIGGERED:</span> New KKS ${partKks} automatically added to Document Center Master List!
+        </div>`;
+        COMPONENT_DATA.unshift({
+          area: "Instrument Air",
+          equip: equip,
+          equipKks: equipKks,
+          part: part,
+          partKks: partKks,
+          category: "User Custom",
+          sheet: "User Registered"
+        });
+      } else {
+        logHtml += `
+          &nbsp;└─ Action 2: KKS already verified in Document Center Master Catalog.
+        </div>`;
+      }
+
+      c.innerHTML = logHtml + c.innerHTML;
+    }
+
+    // Initialize default view
+    renderMatrix(COMPONENT_DATA);
+    inspectEquip('dryer1');
+  </script>
+</body>
+</html>
